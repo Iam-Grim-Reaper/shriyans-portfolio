@@ -1,7 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { createRoot } from 'react-dom/client';
-import { motion, AnimatePresence, useScroll, useTransform, useMotionValue, useSpring } from 'motion/react';
+import { motion, AnimatePresence, MotionConfig, useScroll, useTransform, useMotionValue, useSpring } from 'motion/react';
 import { ArrowUpRight, Mail, MapPin, Cpu, BrainCircuit, Layers3, Sparkles, Trophy, ChevronRight, X, Target, Wrench, TrendingUp } from 'lucide-react';
+import { projects, skills } from './data/portfolio.js';
 import './styles.css';
 
 // lucide-react dropped brand/logo marks (trademark policy), so GitHub & LinkedIn
@@ -19,63 +20,6 @@ const Linkedin = (props) => (
     <circle cx="4" cy="4" r="2"/>
   </svg>
 );
-
-const skills = [
-  ['01', 'AI Systems', ['RAG Pipelines', 'LLM Integration', 'Prompt Engineering', 'Embeddings', 'Transformers']],
-  ['02', 'Machine Learning', ['Deep Learning', 'Computer Vision', 'NLP', 'Model Evaluation', 'Data Augmentation']],
-  ['03', 'Frameworks', ['TensorFlow', 'Keras', 'Scikit-learn', 'OpenCV', 'ONNX Runtime']],
-  ['04', 'Backend & APIs', ['FastAPI', 'REST APIs', 'Python', 'Authentication', 'Logging']],
-  ['05', 'Data & Search', ['MySQL', 'FAISS', 'Neo4j', 'Pandas', 'NumPy']],
-  ['06', 'Performance', ['Micro-batching', 'Multithreading', 'Checkpointing', 'Profiling', 'Resumability']],
-];
-
-const projects = [
-  {
-    num: '01',
-    label: 'Computer Vision · Medical AI',
-    title: 'Histopathology Driven Detection of Lung & Colon Cancer',
-    copy: 'A production-oriented pathology image classification pipeline using ConvNeXt-Small, transfer learning, Macenko stain normalization, explainability, rigorous evaluation, and optimized ONNX inference.',
-    stack: ['ConvNeXt-Small', 'ONNX', 'INT8', 'Grad-CAM', 'SSIM', 'REST API'],
-    accent: 'PATHOLOGY / VISION',
-    problem: 'Manual histopathology review is slow and subject to inter-pathologist variance, which delays diagnosis for lung and colon cancer screening at scale.',
-    approach: 'Fine-tuned a ConvNeXt-Small backbone on stain-normalized whole-slide tiles (Macenko normalization to neutralize staining variance across labs), then quantized the model to INT8 ONNX for fast CPU inference and wrapped it behind a REST API.',
-    impact: [
-      'Grad-CAM overlays give pathologists a visual explanation for every prediction, not just a label',
-      'INT8 ONNX export cut inference latency significantly versus the FP32 PyTorch baseline',
-      'SSIM-based checks validate stain normalization quality before a tile ever reaches the model',
-    ],
-  },
-  {
-    num: '02',
-    label: 'Deep Learning · Healthcare',
-    title: 'Pneumonia Detection using Deep Learning',
-    copy: 'Built an EfficientNetV2-based pneumonia detection workflow with augmentation, normalization, class weighting, and a lightweight interface for real-time inference simulation in constrained environments.',
-    stack: ['Python', 'TensorFlow', 'Keras', 'EfficientNetV2', 'OpenCV'],
-    accent: 'CHEST X-RAY / DL',
-    problem: 'Public chest X-ray datasets are heavily class-imbalanced, which biases naive classifiers toward the majority "normal" class and hides true recall on pneumonia cases.',
-    approach: 'Trained EfficientNetV2 with targeted augmentation (rotation, contrast jitter, CLAHE) and class-weighted loss to correct for imbalance, then benchmarked inference under constrained-resource conditions to simulate low-power clinical hardware.',
-    impact: [
-      'Class weighting materially improved recall on the minority pneumonia class without sacrificing precision',
-      'CLAHE-based preprocessing improved contrast on low-quality scans before inference',
-      'Validated the pipeline can run inference simulation on constrained hardware profiles',
-    ],
-  },
-  {
-    num: '03',
-    label: 'Production AI · Face Recognition',
-    title: 'Smart Face Recognizer — ISRO NRSC',
-    copy: 'High-performance InsightFace archival recognition pipeline with optimized preprocessing, multi-threaded CPU micro-batching, checkpoint recovery, persistence, monitoring, and threshold tuning.',
-    stack: ['InsightFace', 'OpenCV', 'NumPy', 'MySQL', 'OpenMP', 'MKL'],
-    accent: 'IDENTITY / RETRIEVAL',
-    problem: 'NRSC needed to recognize employees across a large archival image set on CPU-only infrastructure, with runs that had to survive interruption without restarting from scratch.',
-    approach: 'Built an InsightFace embedding pipeline with CPU micro-batching and multithreading tuned against OpenMP/MKL, added checkpointed, resumable processing, and persisted embeddings and run state to MySQL with monitoring and logging throughout.',
-    impact: [
-      'Checkpoint recovery meant a killed process could resume from the last batch instead of restarting',
-      'Threshold tuning alongside NRSC engineers measurably reduced false-positive matches',
-      'Micro-batching plus multithreading pushed CPU-only throughput well past the naive baseline',
-    ],
-  }
-];
 
 const SectionTitle = ({kicker, title, copy}) => (
   <motion.div className="section-heading" initial={{opacity:0,y:18}} whileInView={{opacity:1,y:0}} viewport={{once:true, margin:'-80px'}} transition={{duration:.6}}>
@@ -133,26 +77,47 @@ function ScrollProgress() {
 }
 
 function ProjectModal({ project, onClose }) {
+  const dialogRef = useRef(null);
+  const closeRef = useRef(null);
   useEffect(() => {
-    const onKey = (e) => e.key === 'Escape' && onClose();
-    window.addEventListener('keydown', onKey);
+    const previouslyFocused = document.activeElement;
+    const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
-    return () => { window.removeEventListener('keydown', onKey); document.body.style.overflow = ''; };
+    closeRef.current?.focus();
+    const onKey = (event) => {
+      if (event.key === 'Escape') { event.preventDefault(); onClose(); }
+      if (event.key !== 'Tab' || !dialogRef.current) return;
+      const focusable = [...dialogRef.current.querySelectorAll('a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])')];
+      if (!focusable.length) return;
+      const first = focusable[0], last = focusable[focusable.length - 1];
+      if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+      if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+    };
+    document.addEventListener('keydown', onKey);
+    return () => {
+      document.removeEventListener('keydown', onKey);
+      document.body.style.overflow = previousOverflow;
+      previouslyFocused?.focus?.();
+    };
   }, [onClose]);
 
   return (
     <motion.div className="modal-backdrop" initial={{opacity:0}} animate={{opacity:1}} exit={{opacity:0}} onClick={onClose}>
       <motion.div
         className="modal-card"
+        ref={dialogRef}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby={`case-study-${project.num}`}
         initial={{opacity:0, y:28, scale:.97}}
         animate={{opacity:1, y:0, scale:1}}
         exit={{opacity:0, y:18, scale:.98}}
         transition={{duration:.35, ease:[.16,1,.3,1]}}
         onClick={(e) => e.stopPropagation()}
       >
-        <button className="modal-close" onClick={onClose} aria-label="Close"><X size={18}/></button>
+        <button ref={closeRef} type="button" className="modal-close" onClick={onClose} aria-label="Close case study"><X size={18}/></button>
         <div className="modal-top"><span>CASE STUDY // {project.num}</span><span>{project.accent}</span></div>
-        <h3>{project.title}</h3>
+        <h3 id={`case-study-${project.num}`}>{project.title}</h3>
         <div className="modal-block">
           <div className="modal-block-label"><Target size={14}/> Problem</div>
           <p>{project.problem}</p>
@@ -168,7 +133,12 @@ function ProjectModal({ project, onClose }) {
           </div>
         </div>
         <div className="tags">{project.stack.map(s=><span key={s}>{s}</span>)}</div>
-        <a href="https://github.com/Iam-Grim-Reaper" target="_blank" rel="noreferrer" className="project-link">View GitHub profile <ArrowUpRight size={15}/></a>
+        {project.note && <p className="project-note">{project.note}</p>}
+        {project.repoUrl ? (
+          <a href={project.repoUrl} target="_blank" rel="noopener noreferrer" className="project-link">Explore the project code <ArrowUpRight size={15}/></a>
+        ) : (
+          <a href="mailto:shriyansdoespython@gmail.com?subject=ISRO%20project%20inquiry" className="project-link">Ask about this project <ArrowUpRight size={15}/></a>
+        )}
       </motion.div>
     </motion.div>
   );
@@ -183,28 +153,27 @@ function Hero() {
   return (
     <section ref={ref} className="hero wrap">
       <motion.div initial={{opacity:0,y:14}} animate={{opacity:1,y:0}} transition={{duration:.55}} className="hero-left">
-        <div className="status"><span className="pulse"></span> AI SYSTEMS // ONLINE</div>
-        <h1>Engineering AI that<br/><em>works in the real world.</em></h1>
-        <p className="hero-copy">AI Engineer focused on production-ready Generative AI, computer vision, machine learning, RAG pipelines, agentic workflows, and scalable backend systems.</p>
+        <div className="status">AI ENGINEER / MACHINE LEARNING / BACKEND</div>
+        <h1>Shriyans Denis.<br/><em>Engineering useful AI.</em></h1>
+        <p className="hero-copy">I build AI-powered applications, from computer vision and explainable inference to Python APIs and practical user-facing workflows.</p>
         <div className="hero-actions">
-          <Magnetic className="primary" href="#projects">Explore projects <ArrowUpRight size={17}/></Magnetic>
+          <Magnetic className="primary" href="#projects">View selected work <ArrowUpRight size={17}/></Magnetic>
           <Magnetic className="secondary" href="https://github.com/Iam-Grim-Reaper" target="_blank" rel="noreferrer"><Github size={17}/> GitHub</Magnetic>
         </div>
         <div className="meta-row"><span><MapPin size={14}/> Hyderabad, India</span><span>B.Tech AI · 2026</span><span>Open to AI/ML roles</span></div>
       </motion.div>
       <motion.div style={{ y: panelY, opacity: panelOpacity }} initial={{opacity:0,scale:.96}} animate={{opacity:1,scale:1}} transition={{duration:.7,delay:.08}} className="hero-panel">
-        <div className="panel-top"><span>PROFILE.json</span><span>v2.0</span></div>
-        <pre>{`{
-  "role": "AI Engineer",
-  "focus": [
-    "Generative AI",
-    "Computer Vision",
-    "RAG + Agents",
-    "ML Systems"
-  ],
-  "core": "Python + FastAPI",
-  "status": "building"
-}`}</pre>
+        <div className="panel-top"><span>ENGINEERING SNAPSHOT</span><span>FOCUS AREAS</span></div>
+        <div className="panel-summary">
+          <div className="small-label">FROM MODEL TO PRODUCT</div>
+          <h2>Building across the AI stack.</h2>
+          <p>Connecting intelligent models with useful, maintainable applications.</p>
+        </div>
+        <div className="panel-capabilities">
+          <div><span>01</span> Computer vision &amp; inference</div>
+          <div><span>02</span> Python backends &amp; APIs</div>
+          <div><span>03</span> Explainability &amp; evaluation</div>
+        </div>
         <div className="panel-metrics">
           <div><strong>8.01</strong><span>CGPA / 10</span></div>
           <div><strong>ISRO</strong><span>AI Internship</span></div>
@@ -219,18 +188,19 @@ function App(){
   const [openProject, setOpenProject] = useState(null);
 
   return <div className="app-shell">
-    <div className="noise" />
+    <a className="skip-link" href="#top">Skip to main content</a>
+    <div className="noise" aria-hidden="true" />
     <ScrollProgress />
     <CursorGlow />
     <header className="nav wrap">
       <a className="brand" href="#top"><span>SD</span><b>SHRIYANS DENIS</b></a>
-      <nav>
+      <nav aria-label="Main navigation">
         <a href="#work">Work</a><a href="#projects">Projects</a><a href="#skills">Stack</a><a href="#contact">Contact</a>
       </nav>
       <Magnetic className="nav-cta" href="mailto:shriyansdoespython@gmail.com">Let's talk <ArrowUpRight size={15}/></Magnetic>
     </header>
 
-    <main id="top">
+    <main id="top" tabIndex="-1">
       <Hero />
 
       <section className="signal-bar">
@@ -248,7 +218,7 @@ function App(){
               <p><ChevronRight/> Engineered an InsightFace pipeline with optimized preprocessing, alignment and embedding generation.</p>
               <p><ChevronRight/> Added CPU micro-batching, multithreading, checkpoint recovery and resumable processing.</p>
               <p><ChevronRight/> Integrated MySQL persistence, performance tracking, logging and validation.</p>
-              <p><ChevronRight/> Tuned embedding distance metrics and recognition thresholds with NRSC AI engineers to reduce false positives.</p>
+              <p><ChevronRight/> Collaborated on embedding distance metrics and recognition threshold tuning.</p>
             </div>
           </div>
         </motion.div>
@@ -262,7 +232,7 @@ function App(){
       </section>
 
       <section id="projects" className="section wrap">
-        <SectionTitle kicker="02 / SELECTED PROJECTS" title="AI projects with deployment thinking." copy="The portfolio emphasizes not only model training, but also evaluation, explainability, optimization, APIs, and operational reliability. Click a project to open the full case study." />
+        <SectionTitle kicker="02 / SELECTED PROJECTS" title="AI projects with deployment thinking." copy="A closer look at the problems, implementation choices, and supporting code. Open a case study to explore the details." />
         <div className="projects-grid">
           {projects.map((p,idx)=><motion.article
             key={p.num}
@@ -272,10 +242,6 @@ function App(){
             viewport={{once:true}}
             transition={{delay:idx*.08}}
             whileHover={{y:-6}}
-            onClick={() => setOpenProject(p)}
-            role="button"
-            tabIndex={0}
-            onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && setOpenProject(p)}
           >
             <div className="project-top"><span>PROJECT // {p.num}</span><span>{p.accent}</span></div>
             <div className="project-icon">{idx===0?<BrainCircuit/>:idx===1?<Cpu/>:<Layers3/>}</div>
@@ -283,7 +249,7 @@ function App(){
             <h3>{p.title}</h3>
             <p>{p.copy}</p>
             <div className="tags">{p.stack.map(s=><span key={s}>{s}</span>)}</div>
-            <span className="project-link">Open case study <ArrowUpRight size={15}/></span>
+            <button type="button" className="project-open" onClick={() => setOpenProject(p)} aria-label={`Read case study: ${p.title}`}>Read case study <ArrowUpRight size={15}/></button>
           </motion.article>)}
         </div>
       </section>
@@ -329,4 +295,4 @@ function App(){
   </div>
 }
 
-createRoot(document.getElementById('root')).render(<App />)
+createRoot(document.getElementById("root")).render(<MotionConfig reducedMotion="user"><App /></MotionConfig>);
