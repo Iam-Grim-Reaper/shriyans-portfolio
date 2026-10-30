@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client';
 import { motion, AnimatePresence, MotionConfig, useScroll } from 'motion/react';
 import { ArrowUpRight, Mail, MapPin, Sparkles, Trophy, ChevronRight, X, Target, Wrench, TrendingUp } from 'lucide-react';
 import { projects, skills } from './data/portfolio.js';
+import shreyPortrait from '../shrey.jpeg';
 import './styles.css';
 
 // lucide-react dropped brand/logo marks (trademark policy), so GitHub & LinkedIn
@@ -119,12 +120,21 @@ function Hero() {
         </div>
         <div className="meta-row"><span><MapPin size={14}/> Hyderabad, India</span><span>B.Tech AI · 2026</span><span>Open to AI/ML roles</span></div>
       </motion.div>
-      <aside className="hero-panel" aria-label="Engineering focus areas">
-        <div className="panel-top"><span>ENGINEERING SNAPSHOT</span><span>01 — 03</span></div>
-        <div className="panel-graphic" aria-hidden="true">
-          <span className="graphic-label top">MODEL</span>
-          <div className="graphic-orbit"><div className="graphic-core">AI</div></div>
-          <span className="graphic-label bottom">PRODUCT</span>
+      <aside className="hero-panel" aria-label="Portrait and engineering focus areas">
+        <div className="panel-top"><span>BEHIND THE WORK</span><span>PROFILE / 01</span></div>
+        <div className="panel-graphic portrait-frame">
+          <img
+            src={shreyPortrait}
+            alt="Portrait of Shriyans Denis outdoors"
+            className="portrait-image"
+            fetchPriority="high"
+            loading="eager"
+            decoding="async"
+          />
+          <div className="portrait-overlay" aria-hidden="true">
+            <span>SHRIYANS DENIS</span>
+            <span>AI ENGINEER / HYDERABAD</span>
+          </div>
         </div>
         <div className="panel-summary">
           <div className="small-label">FROM MODEL TO PRODUCT</div>
