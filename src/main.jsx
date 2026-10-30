@@ -136,7 +136,7 @@ function Hero() {
           <div><span>02</span> Python backends &amp; APIs</div>
           <div><span>03</span> Explainability &amp; evaluation</div>
         </div>
-        </aside>
+      </aside>
     </section>
   );
 }
@@ -150,7 +150,7 @@ function ProjectVisual({ project }) {
   const steps = flows[project.num] ?? [];
   return (
     <div className={`project-visual visual-${project.num}`}>
-      <div className="visual-topline"><span>WORK / ${''}{project.num}</span><span>PROCESS OVERVIEW</span></div>
+      <div className="visual-topline"><span>WORK / {project.num}</span><span>PROCESS OVERVIEW</span></div>
       <div className="diagram-flow" role="img" aria-label={steps.join(' to ')}>
         {steps.map((step, index) => (
           <React.Fragment key={step}>
