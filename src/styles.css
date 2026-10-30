@@ -124,7 +124,7 @@ button { cursor: pointer; }
 .project-card { min-width: 0; background: var(--surface); border: 1px solid var(--line); overflow: hidden; display: flex; flex-direction: column; transition: border-color .2s, box-shadow .2s; }
 .project-card:hover { border-color: #acbbcb; box-shadow: 0 14px 35px rgba(20,36,52,.045); }
 .project-card:first-child { grid-column: 1/-1; flex-direction: row; min-height: 380px; }
-.project-visual { flex: 0 0 100%; min-height: 212px; background: #e9edf0; padding: 23px; display: flex; flex-direction: column; justify-content: space-between; gap: 35px; color: #26394c; }
+.project-visual { flex: 0 0 auto; min-height: 212px; background: #e9edf0; padding: 23px; display: flex; flex-direction: column; justify-content: space-between; gap: 35px; color: #26394c; }
 .project-card:first-child .project-visual { flex-basis: 47%; }
 .project-visual.visual-01 { background: #e7eaf7; }
 .project-visual.visual-02 { background: #e9eff2; }
