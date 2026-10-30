@@ -65,3 +65,15 @@ This revision leaves the default branch unchanged until the pull request is revi
 The selected redesign uses warm off-white surfaces, ink typography, restrained blue accents, a display serif for headings, stronger whitespace, and illustrative process diagrams made from semantic markup. Project case studies now appear before experience, with the first project featured in a larger layout.
 
 This direction intentionally favors legibility and recruiter usability over cursor effects or elaborate animation. The portfolio remains responsive and includes reduced-motion support. Verify the mobile layout, keyboard controls, and outbound links before merging the draft PR.
+
+## October 2026 résumé synchronization
+
+- The current PDF is included in the repository root as `Shriyans Denis Resume.pdf` and imported as a versioned Vite asset for View and Download links.
+- Updated current role: Altaric Consulting, AI Intern (Sep 2026–present), including Bar Buddy backend, profile verification, and discovery workflows.
+- Added TraceGraph AI as the featured project, linked to its public repository.
+- Kept HistoDetect and the earlier pneumonia prototype as supporting projects; ISRO NRSC work remains in experience.
+- Refreshed the technology categories and certification dates from the résumé.
+- Added VJIT leadership activities to the recognition section.
+- Use the résumé as the source for dates and experience scope. Validate specific technical performance claims against published code or reproducible results before adding them to the website.
+
+Changing the résumé's bytes on GitHub will change its built asset URL on the next Vercel deployment. No separate cloud file hosting is required.

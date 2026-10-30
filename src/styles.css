@@ -382,3 +382,30 @@ button { cursor: pointer; }
   .hero-panel:hover { transform: none; }
   .portrait-frame:hover .portrait-image { transform: none; }
 }
+
+/* 2026 résumé integration */
+.hero-inline-link {
+  display: inline-flex;
+  gap: 7px;
+  align-items: center;
+  color: var(--muted);
+  font: 600 12px var(--sans);
+  text-decoration: none;
+  padding: 12px 2px;
+  transition: color 220ms ease;
+}
+.hero-inline-link:hover { color: var(--blue); }
+.hero-inline-link svg { flex: none; }
+.credential-copy { display: flex; flex-direction: column; gap: 5px; min-width: 0; }
+.credential-copy strong { font-weight: 600; color: var(--ink); }
+.credential-copy small { font-size: 11px; color: var(--quiet); line-height: 1.5; }
+.exp-index { font-weight: 500; }
+.experience-card:first-of-type .exp-index { color: var(--blue); }
+@media(max-width:520px) {
+  .hero-inline-link { width: 100%; justify-content: flex-start; padding: 7px 0; }
+  .signal-list div { align-items: flex-start; }
+  .nav nav { row-gap: 15px; }
+}
+@media(prefers-reduced-motion:reduce) {
+  .hero-inline-link { transition: none; }
+}

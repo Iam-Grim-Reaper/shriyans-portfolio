@@ -1,9 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import { motion, AnimatePresence, MotionConfig, useScroll } from 'motion/react';
-import { ArrowUpRight, Mail, MapPin, Sparkles, Trophy, ChevronRight, X, Target, Wrench, TrendingUp } from 'lucide-react';
-import { projects, skills } from './data/portfolio.js';
+import { ArrowUpRight, Mail, MapPin, FileDown, Sparkles, Trophy, ChevronRight, X, Target, Wrench, TrendingUp } from 'lucide-react';
+import { projects, skills, experiences, credentials } from './data/portfolio.js';
 import shreyPortrait from '../shrey.jpeg';
+import resumePdf from '../Shriyans Denis Resume.pdf?url';
 import './styles.css';
 
 // lucide-react dropped brand/logo marks (trademark policy), so GitHub & LinkedIn
@@ -111,12 +112,13 @@ function Hero() {
   return (
     <section className="hero wrap">
       <motion.div initial={{opacity:0,y:14}} animate={{opacity:1,y:0}} transition={{duration:.55}} className="hero-left">
-        <div className="status">AI ENGINEER / MACHINE LEARNING / BACKEND</div>
+        <div className="status">AI SOFTWARE ENGINEER / GENERATIVE AI / BACKEND</div>
         <h1>Shriyans Denis.<br/><em>Engineering useful AI.</em></h1>
-        <p className="hero-copy">I build AI-powered applications, from computer vision and explainable inference to Python APIs and practical user-facing workflows.</p>
+        <p className="hero-copy">I build intelligent applications across agentic RAG, computer vision, and backend engineering—connecting retrieval systems and AI models to useful product experiences.</p>
         <div className="hero-actions">
           <Magnetic className="primary" href="#projects">View selected work <ArrowUpRight size={17}/></Magnetic>
-          <Magnetic className="secondary" href="https://github.com/Iam-Grim-Reaper" target="_blank" rel="noreferrer"><Github size={17}/> GitHub</Magnetic>
+          <Magnetic className="secondary" href={resumePdf} target="_blank" rel="noopener noreferrer" aria-label="Open Shriyans Denis résumé PDF"><FileDown size={17}/> View résumé</Magnetic>
+          <Magnetic className="hero-inline-link" href="https://github.com/Iam-Grim-Reaper" target="_blank" rel="noopener noreferrer"><Github size={16}/> GitHub <ArrowUpRight size={13}/></Magnetic>
         </div>
         <div className="meta-row"><span><MapPin size={14}/> Hyderabad, India</span><span>B.Tech AI · 2026</span><span>Open to AI/ML roles</span></div>
       </motion.div>
@@ -139,12 +141,12 @@ function Hero() {
         <div className="panel-summary">
           <div className="small-label">FROM MODEL TO PRODUCT</div>
           <h2>Building across the AI stack.</h2>
-          <p>Connecting intelligent models with useful, maintainable applications.</p>
+          <p>Agentic retrieval, computer vision, and reliable full-stack delivery.</p>
         </div>
         <div className="panel-capabilities">
-          <div><span>01</span> Computer vision &amp; inference</div>
-          <div><span>02</span> Python backends &amp; APIs</div>
-          <div><span>03</span> Explainability &amp; evaluation</div>
+          <div><span>01</span> Agentic RAG &amp; retrieval</div>
+          <div><span>02</span> AI backends &amp; APIs</div>
+          <div><span>03</span> Computer vision &amp; ML</div>
         </div>
       </aside>
     </section>
@@ -153,9 +155,9 @@ function Hero() {
 
 function ProjectVisual({ project }) {
   const flows = {
-    '01': ['Histology image', 'ConvNeXt', 'Grad-CAM'],
-    '02': ['Chest X-ray', 'EfficientNet', 'Prediction'],
-    '03': ['Image archive', 'Face vectors', 'Matching'],
+    '01': ['Documents', 'Hybrid search', 'Answer'],
+    '02': ['Histology', 'ConvNeXt', 'Grad-CAM'],
+    '03': ['Chest X-ray', 'EfficientNet', 'Result'],
   };
   const steps = flows[project.num] ?? [];
   return (
@@ -184,7 +186,7 @@ function App(){
     <header className="nav wrap">
       <a className="brand" href="#top"><span>SD</span><b>SHRIYANS DENIS</b></a>
       <nav aria-label="Main navigation">
-        <a href="#projects">Projects</a><a href="#work">Experience</a><a href="#skills">Stack</a><a href="#contact">Contact</a>
+        <a href="#projects">Projects</a><a href="#work">Experience</a><a href="#skills">Stack</a><a href="#contact">Contact</a><a href={resumePdf} target="_blank" rel="noopener noreferrer">Résumé</a>
       </nav>
       <Magnetic className="nav-cta" href="mailto:shriyansdoespython@gmail.com">Let's talk <ArrowUpRight size={15}/></Magnetic>
     </header>
@@ -193,11 +195,11 @@ function App(){
       <Hero />
 
       <section className="signal-bar">
-        <div className="wrap signal-inner"><span>COMPUTER VISION</span><i/><span>PYTORCH</span><i/><span>FASTAPI</span><i/><span>NEXT.JS</span><i/><span>MODEL INFERENCE</span><i/><span>PYTHON</span></div>
+        <div className="wrap signal-inner"><span>AGENTIC RAG</span><i/><span>LANGGRAPH</span><i/><span>FASTAPI</span><i/><span>QDRANT</span><i/><span>NEO4J</span><i/><span>COMPUTER VISION</span></div>
       </section>
 
       <section id="projects" className="section wrap">
-        <SectionTitle kicker="01 / SELECTED WORK" title="Selected projects, thoughtfully built." copy="A closer look at the problems, implementation choices, and supporting code. Open a case study to explore the details." />
+        <SectionTitle kicker="01 / SELECTED WORK" title="Selected work, engineered for impact." copy="From agentic research workflows to explainable computer vision—explore how the systems are designed and where to find the code." />
         <div className="projects-grid">
           {projects.map((p,idx)=><motion.article
             key={p.num}
@@ -226,58 +228,68 @@ function App(){
       </section>
 
       <section id="work" className="section wrap">
-        <SectionTitle kicker="02 / EXPERIENCE" title="Learning by building in real environments." copy="Practical engineering experience across computer vision, model optimization, data persistence, and reliable inference workflows." />
-        <motion.div className="experience-card" initial={{opacity:0,y:16}} whileInView={{opacity:1,y:0}} viewport={{once:true, margin:'-60px'}} transition={{duration:.5}}>
-          <div className="exp-index">2025</div>
-          <div className="exp-main">
-            <div className="exp-head"><div><div className="small-label">AI INTERN</div><h3>ISRO · National Remote Sensing Centre</h3></div><div className="date">SEP — DEC 2025</div></div>
-            <p className="exp-project">Smart Face Recognizer for Employee Archival System</p>
-            <div className="bullets">
-              <p><ChevronRight/> Engineered an InsightFace pipeline with optimized preprocessing, alignment and embedding generation.</p>
-              <p><ChevronRight/> Added CPU micro-batching, multithreading, checkpoint recovery and resumable processing.</p>
-              <p><ChevronRight/> Integrated MySQL persistence, performance tracking, logging and validation.</p>
-              <p><ChevronRight/> Collaborated on embedding distance metrics and recognition threshold tuning.</p>
+        <SectionTitle kicker="02 / EXPERIENCE" title="Engineering experience across AI products." copy="Current application engineering at Altaric Consulting, alongside AI research and inference work at ISRO NRSC." />
+        {experiences.map((experience, index) => (
+          <motion.article
+            key={experience.organization}
+            className={index === experiences.length - 1 ? 'experience-card muted-card' : 'experience-card'}
+            initial={{opacity:0,y:14}}
+            whileInView={{opacity:1,y:0}}
+            viewport={{once:true,margin:'-60px'}}
+            transition={{duration:.45,delay:Math.min(index*.06,.14)}}
+          >
+            <div className="exp-index">{experience.year}</div>
+            <div className="exp-main">
+              <div className="exp-head">
+                <div><div className="small-label">{experience.role}</div><h3>{experience.organization}</h3></div>
+                <div className="date">{experience.date}</div>
+              </div>
+              {experience.project && <p className="exp-project">{experience.project}</p>}
+              <div className="bullets">
+                {experience.bullets.map(bullet => <p key={bullet}><ChevronRight aria-hidden="true"/>{bullet}</p>)}
+              </div>
             </div>
-          </div>
-        </motion.div>
-        <motion.div className="experience-card muted-card" initial={{opacity:0,y:16}} whileInView={{opacity:1,y:0}} viewport={{once:true, margin:'-60px'}} transition={{duration:.5, delay:.08}}>
-          <div className="exp-index">2024</div>
-          <div className="exp-main">
-            <div className="exp-head"><div><div className="small-label">HR INTERN</div><h3>WoW HR</h3></div><div className="date">JUN — AUG 2024</div></div>
-            <p className="muted-copy">Supported recruitment coordination, interview scheduling, DEI initiatives, event planning, and HR analytics exposure.</p>
-          </div>
-        </motion.div>
+          </motion.article>
+        ))}
       </section>
 
       <section id="skills" className="section wrap">
-        <SectionTitle kicker="03 / TECHNICAL SYSTEM" title="A stack built around AI delivery." />
+        <SectionTitle kicker="03 / TECHNICAL STACK" title="Tools behind the work." />
         <div className="skills-grid">{skills.map(([n,title,items],idx)=><motion.div className="skill" key={n} initial={{opacity:0,y:14}} whileInView={{opacity:1,y:0}} viewport={{once:true, margin:'-40px'}} transition={{duration:.45, delay:(idx%3)*.06}}><div className="skill-num">{n}</div><h4>{title}</h4><div className="skill-list">{items.map(i=><span key={i}>{i}</span>)}</div></motion.div>)}</div>
       </section>
 
       <section className="section wrap education">
         <div>
-          <SectionTitle kicker="04 / EDUCATION" title="Artificial Intelligence by foundation." />
-          <motion.div className="edu-card" initial={{opacity:0,y:14}} whileInView={{opacity:1,y:0}} viewport={{once:true}} transition={{duration:.5}}><span>2022 — 2026</span><h3>B.Tech in Artificial Intelligence</h3><p>Vidya Jyothi Institute of Technology · JNTU, Hyderabad</p><b>CGPA 8.01 / 10</b></motion.div>
+          <SectionTitle kicker="04 / EDUCATION" title="A foundation in Artificial Intelligence." />
+          <motion.div className="edu-card" initial={{opacity:0,y:14}} whileInView={{opacity:1,y:0}} viewport={{once:true}} transition={{duration:.5}}><span>OCT 2022 — MAY 2026</span><h3>B.Tech in Artificial Intelligence</h3><p>Vidya Jyothi Institute of Technology · Hyderabad</p><b>CGPA 8.01 / 10</b></motion.div>
         </div>
         <div>
-          <SectionTitle kicker="05 / SIGNALS" title="Certifications & achievements." />
+          <SectionTitle kicker="05 / RECOGNITION" title="Certifications, leadership & achievements." />
           <div className="signal-list">
-            <motion.div initial={{opacity:0,x:10}} whileInView={{opacity:1,x:0}} viewport={{once:true}} transition={{delay:0}}><Sparkles/><span>AWS Academy — Machine Learning Foundations</span></motion.div>
-            <motion.div initial={{opacity:0,x:10}} whileInView={{opacity:1,x:0}} viewport={{once:true}} transition={{delay:.05}}><Sparkles/><span>Infosys — Computer Vision 101</span></motion.div>
-            <motion.div initial={{opacity:0,x:10}} whileInView={{opacity:1,x:0}} viewport={{once:true}} transition={{delay:.1}}><Sparkles/><span>Infosys — Introduction to NLP</span></motion.div>
-            <motion.div initial={{opacity:0,x:10}} whileInView={{opacity:1,x:0}} viewport={{once:true}} transition={{delay:.15}}><Trophy/><span>First Prize — ARKA 2023 Ideathon</span></motion.div>
-            <motion.div initial={{opacity:0,x:10}} whileInView={{opacity:1,x:0}} viewport={{once:true}} transition={{delay:.2}}><Trophy/><span>Smart India Hackathon 2023 Finalist</span></motion.div>
+            {credentials.map((item,index) => (
+              <motion.div
+                key={item.title}
+                initial={{opacity:0,x:8}}
+                whileInView={{opacity:1,x:0}}
+                viewport={{once:true}}
+                transition={{duration:.35,delay:(index%4)*.04}}
+              >
+                {item.type === 'certification' ? <Sparkles aria-hidden="true"/> : <Trophy aria-hidden="true"/>}
+                <span className="credential-copy"><strong>{item.title}</strong><small>{[item.organization,item.date].filter(Boolean).join(' · ')}</small></span>
+              </motion.div>
+            ))}
           </div>
         </div>
       </section>
 
       <section id="contact" className="contact-section">
         <div className="wrap contact-grid">
-          <div><div className="kicker">06 / CONTACT</div><h2>Have an AI problem<br/>worth solving?</h2><p>I'm interested in AI engineering, ML systems, computer vision, Generative AI, and backend-heavy intelligent applications.</p></div>
+          <div><div className="kicker">06 / CONTACT</div><h2>Let’s build something<br/>useful with AI.</h2><p>Open to opportunities spanning Generative AI, agentic systems, computer vision, and backend engineering. Explore my work or download the latest résumé.</p></div>
           <div className="contact-links">
             <Magnetic strength={10} href="mailto:shriyansdoespython@gmail.com"><Mail/>shriyansdoespython@gmail.com<ArrowUpRight/></Magnetic>
             <Magnetic strength={10} href="https://linkedin.com/in/shriyansdenis" target="_blank" rel="noreferrer"><Linkedin/>LinkedIn<ArrowUpRight/></Magnetic>
-            <Magnetic strength={10} href="https://github.com/Iam-Grim-Reaper" target="_blank" rel="noreferrer"><Github/>GitHub<ArrowUpRight/></Magnetic>
+            <Magnetic strength={10} href="https://github.com/Iam-Grim-Reaper" target="_blank" rel="noopener noreferrer"><Github/>GitHub<ArrowUpRight/></Magnetic>
+            <a href={resumePdf} download="Shriyans-Denis-Resume.pdf"><FileDown/>Download résumé (PDF)<ArrowUpRight/></a>
           </div>
         </div>
       </section>
