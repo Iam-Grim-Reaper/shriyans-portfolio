@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { createRoot } from 'react-dom/client';
-import { motion, AnimatePresence, MotionConfig, useScroll, useTransform, useMotionValue, useSpring } from 'motion/react';
-import { ArrowUpRight, Mail, MapPin, Cpu, BrainCircuit, Layers3, Sparkles, Trophy, ChevronRight, X, Target, Wrench, TrendingUp } from 'lucide-react';
+import { motion, AnimatePresence, MotionConfig, useScroll } from 'motion/react';
+import { ArrowUpRight, Mail, MapPin, Sparkles, Trophy, ChevronRight, X, Target, Wrench, TrendingUp } from 'lucide-react';
 import { projects, skills } from './data/portfolio.js';
 import './styles.css';
 
@@ -29,46 +29,8 @@ const SectionTitle = ({kicker, title, copy}) => (
   </motion.div>
 );
 
-function Magnetic({ children, strength = 18, className, ...rest }) {
-  const ref = useRef(null);
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
-  const sx = useSpring(x, { stiffness: 250, damping: 18, mass: .4 });
-  const sy = useSpring(y, { stiffness: 250, damping: 18, mass: .4 });
-
-  const onMove = (e) => {
-    const el = ref.current;
-    if (!el) return;
-    const r = el.getBoundingClientRect();
-    x.set(((e.clientX - r.left) / r.width - .5) * strength);
-    y.set(((e.clientY - r.top) / r.height - .5) * strength);
-  };
-  const onLeave = () => { x.set(0); y.set(0); };
-
-  return (
-    <motion.a ref={ref} onMouseMove={onMove} onMouseLeave={onLeave} className={className} style={{ x: sx, y: sy }} {...rest}>
-      {children}
-    </motion.a>
-  );
-}
-
-function CursorGlow() {
-  const x = useMotionValue(-200);
-  const y = useMotionValue(-200);
-  const sx = useSpring(x, { stiffness: 140, damping: 22, mass: .5 });
-  const sy = useSpring(y, { stiffness: 140, damping: 22, mass: .5 });
-  const [active, setActive] = useState(false);
-
-  useEffect(() => {
-    const finePointer = window.matchMedia('(pointer: fine)').matches;
-    if (!finePointer) return;
-    const move = (e) => { x.set(e.clientX); y.set(e.clientY); if (!active) setActive(true); };
-    window.addEventListener('pointermove', move);
-    return () => window.removeEventListener('pointermove', move);
-  }, [active, x, y]);
-
-  if (!active) return null;
-  return <motion.div className="cursor-glow" style={{ left: sx, top: sy }} />;
+function Magnetic({ children, className, strength: _strength, ...rest }) {
+  return <a className={className} {...rest}>{children}</a>;
 }
 
 function ScrollProgress() {
@@ -145,13 +107,8 @@ function ProjectModal({ project, onClose }) {
 }
 
 function Hero() {
-  const ref = useRef(null);
-  const { scrollYProgress } = useScroll({ target: ref, offset: ['start start', 'end start'] });
-  const panelY = useTransform(scrollYProgress, [0, 1], [0, 90]);
-  const panelOpacity = useTransform(scrollYProgress, [0, .8], [1, 0]);
-
   return (
-    <section ref={ref} className="hero wrap">
+    <section className="hero wrap">
       <motion.div initial={{opacity:0,y:14}} animate={{opacity:1,y:0}} transition={{duration:.55}} className="hero-left">
         <div className="status">AI ENGINEER / MACHINE LEARNING / BACKEND</div>
         <h1>Shriyans Denis.<br/><em>Engineering useful AI.</em></h1>
@@ -162,8 +119,13 @@ function Hero() {
         </div>
         <div className="meta-row"><span><MapPin size={14}/> Hyderabad, India</span><span>B.Tech AI · 2026</span><span>Open to AI/ML roles</span></div>
       </motion.div>
-      <motion.div style={{ y: panelY, opacity: panelOpacity }} initial={{opacity:0,scale:.96}} animate={{opacity:1,scale:1}} transition={{duration:.7,delay:.08}} className="hero-panel">
-        <div className="panel-top"><span>ENGINEERING SNAPSHOT</span><span>FOCUS AREAS</span></div>
+      <aside className="hero-panel" aria-label="Engineering focus areas">
+        <div className="panel-top"><span>ENGINEERING SNAPSHOT</span><span>01 — 03</span></div>
+        <div className="panel-graphic" aria-hidden="true">
+          <span className="graphic-label top">MODEL</span>
+          <div className="graphic-orbit"><div className="graphic-core">AI</div></div>
+          <span className="graphic-label bottom">PRODUCT</span>
+        </div>
         <div className="panel-summary">
           <div className="small-label">FROM MODEL TO PRODUCT</div>
           <h2>Building across the AI stack.</h2>
@@ -174,13 +136,31 @@ function Hero() {
           <div><span>02</span> Python backends &amp; APIs</div>
           <div><span>03</span> Explainability &amp; evaluation</div>
         </div>
-        <div className="panel-metrics">
-          <div><strong>8.01</strong><span>CGPA / 10</span></div>
-          <div><strong>ISRO</strong><span>AI Internship</span></div>
-          <div><strong>2×</strong><span>Flagship CV Projects</span></div>
-        </div>
-      </motion.div>
+        </aside>
     </section>
+  );
+}
+
+function ProjectVisual({ project }) {
+  const flows = {
+    '01': ['Histology image', 'ConvNeXt', 'Grad-CAM'],
+    '02': ['Chest X-ray', 'EfficientNet', 'Prediction'],
+    '03': ['Image archive', 'Face vectors', 'Matching'],
+  };
+  const steps = flows[project.num] ?? [];
+  return (
+    <div className={`project-visual visual-${project.num}`}>
+      <div className="visual-topline"><span>WORK / ${''}{project.num}</span><span>PROCESS OVERVIEW</span></div>
+      <div className="diagram-flow" role="img" aria-label={steps.join(' to ')}>
+        {steps.map((step, index) => (
+          <React.Fragment key={step}>
+            {index > 0 && <span className="diagram-arrow" aria-hidden="true">→</span>}
+            <span className={`diagram-node ${index === 1 ? 'active' : ''}`}>{step}</span>
+          </React.Fragment>
+        ))}
+      </div>
+      <div className="visual-bottomline"><span>{project.label}</span><span>0{steps.length} STAGES</span></div>
+    </div>
   );
 }
 
@@ -191,11 +171,10 @@ function App(){
     <a className="skip-link" href="#top">Skip to main content</a>
     <div className="noise" aria-hidden="true" />
     <ScrollProgress />
-    <CursorGlow />
     <header className="nav wrap">
       <a className="brand" href="#top"><span>SD</span><b>SHRIYANS DENIS</b></a>
       <nav aria-label="Main navigation">
-        <a href="#work">Work</a><a href="#projects">Projects</a><a href="#skills">Stack</a><a href="#contact">Contact</a>
+        <a href="#projects">Projects</a><a href="#work">Experience</a><a href="#skills">Stack</a><a href="#contact">Contact</a>
       </nav>
       <Magnetic className="nav-cta" href="mailto:shriyansdoespython@gmail.com">Let's talk <ArrowUpRight size={15}/></Magnetic>
     </header>
@@ -204,11 +183,40 @@ function App(){
       <Hero />
 
       <section className="signal-bar">
-        <div className="wrap signal-inner"><span>RAG PIPELINES</span><i/> <span>COMPUTER VISION</span><i/> <span>FASTAPI</span><i/> <span>ONNX</span><i/> <span>NEO4J</span><i/> <span>FAISS</span></div>
+        <div className="wrap signal-inner"><span>COMPUTER VISION</span><i/><span>PYTORCH</span><i/><span>FASTAPI</span><i/><span>NEXT.JS</span><i/><span>MODEL INFERENCE</span><i/><span>PYTHON</span></div>
+      </section>
+
+      <section id="projects" className="section wrap">
+        <SectionTitle kicker="01 / SELECTED WORK" title="Selected projects, thoughtfully built." copy="A closer look at the problems, implementation choices, and supporting code. Open a case study to explore the details." />
+        <div className="projects-grid">
+          {projects.map((p,idx)=><motion.article
+            key={p.num}
+            className="project-card"
+            initial={{opacity:0,y:12}}
+            whileInView={{opacity:1,y:0}}
+            viewport={{once:true}}
+            transition={{duration:.35,delay:idx*.07}}
+          >
+            <ProjectVisual project={p} />
+            <div className="project-content">
+            <div className="project-top"><span>PROJECT // {p.num}</span><span>{p.accent}</span></div>
+            <div className="project-label">{p.label}</div>
+            <h3>{p.title}</h3>
+            <p>{p.copy}</p>
+            <div className="tags">{p.stack.map(s=><span key={s}>{s}</span>)}</div>
+            <div className="project-footer">
+              <button type="button" className="project-open" onClick={() => setOpenProject(p)} aria-label={`Read case study: ${p.title}`}>Explore case study <ArrowUpRight size={15}/></button>
+              {p.repoUrl
+                ? <a className="project-source" href={p.repoUrl} target="_blank" rel="noopener noreferrer">Source code <ArrowUpRight size={13}/></a>
+                : <span className="project-private">Internship project</span>}
+            </div>
+            </div>
+          </motion.article>)}
+        </div>
       </section>
 
       <section id="work" className="section wrap">
-        <SectionTitle kicker="01 / EXPERIENCE" title="Built inside real AI workflows." copy="Hands-on engineering experience across inference optimization, data persistence, threshold tuning, recovery mechanisms, and production-oriented computer vision." />
+        <SectionTitle kicker="02 / EXPERIENCE" title="Learning by building in real environments." copy="Practical engineering experience across computer vision, model optimization, data persistence, and reliable inference workflows." />
         <motion.div className="experience-card" initial={{opacity:0,y:16}} whileInView={{opacity:1,y:0}} viewport={{once:true, margin:'-60px'}} transition={{duration:.5}}>
           <div className="exp-index">2025</div>
           <div className="exp-main">
@@ -229,29 +237,6 @@ function App(){
             <p className="muted-copy">Supported recruitment coordination, interview scheduling, DEI initiatives, event planning, and HR analytics exposure.</p>
           </div>
         </motion.div>
-      </section>
-
-      <section id="projects" className="section wrap">
-        <SectionTitle kicker="02 / SELECTED PROJECTS" title="AI projects with deployment thinking." copy="A closer look at the problems, implementation choices, and supporting code. Open a case study to explore the details." />
-        <div className="projects-grid">
-          {projects.map((p,idx)=><motion.article
-            key={p.num}
-            className="project-card"
-            initial={{opacity:0,y:16}}
-            whileInView={{opacity:1,y:0}}
-            viewport={{once:true}}
-            transition={{delay:idx*.08}}
-            whileHover={{y:-6}}
-          >
-            <div className="project-top"><span>PROJECT // {p.num}</span><span>{p.accent}</span></div>
-            <div className="project-icon">{idx===0?<BrainCircuit/>:idx===1?<Cpu/>:<Layers3/>}</div>
-            <div className="project-label">{p.label}</div>
-            <h3>{p.title}</h3>
-            <p>{p.copy}</p>
-            <div className="tags">{p.stack.map(s=><span key={s}>{s}</span>)}</div>
-            <button type="button" className="project-open" onClick={() => setOpenProject(p)} aria-label={`Read case study: ${p.title}`}>Read case study <ArrowUpRight size={15}/></button>
-          </motion.article>)}
-        </div>
       </section>
 
       <section id="skills" className="section wrap">
@@ -287,7 +272,7 @@ function App(){
         </div>
       </section>
     </main>
-    <footer className="wrap footer"><span>© 2026 Shriyans Denis</span><span>BUILT FOR AI ENGINEERING // PORTFOLIO v2.0</span></footer>
+    <footer className="wrap footer"><span>© 2026 Shriyans Denis</span><span>AI ENGINEERING · SELECTED WORK</span></footer>
 
     <AnimatePresence>
       {openProject && <ProjectModal project={openProject} onClose={() => setOpenProject(null)} />}
