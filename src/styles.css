@@ -273,3 +273,112 @@ button { cursor: pointer; }
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
 }
+
+/* Portrait card and restrained interaction polish */
+.hero-panel {
+  transition: transform 360ms cubic-bezier(.2,.75,.25,1),
+              box-shadow 360ms ease, border-color 360ms ease;
+  will-change: auto;
+}
+.portrait-frame {
+  display: block;
+  position: relative;
+  height: clamp(310px, 29vw, 390px);
+  background: #d4d5d2;
+  overflow: hidden;
+  isolation: isolate;
+}
+.portrait-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 31%;
+  filter: saturate(.94) contrast(1.025);
+  animation: portrait-reveal .9s cubic-bezier(.2,.7,.2,1) both;
+  transition: transform 800ms cubic-bezier(.2,.75,.2,1), filter 650ms ease;
+}
+.portrait-frame::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    transparent 60%,
+    rgba(10,20,27,.10) 75%,
+    rgba(10,20,27,.55) 100%
+  );
+}
+.portrait-overlay {
+  position: absolute;
+  z-index: 2;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 14px;
+  flex-wrap: wrap;
+  padding: 40px 22px 20px;
+  color: white;
+  font: 500 10px/1.5 var(--mono);
+  letter-spacing: .075em;
+  text-shadow: 0 1px 5px rgba(0,0,0,.25);
+}
+.portrait-overlay span:last-child {
+  color: rgba(255,255,255,.82);
+  font-size: 9px;
+}
+@keyframes portrait-reveal {
+  from { opacity: 0; transform: scale(1.055) translateY(6px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+@media (hover:hover) and (pointer:fine) {
+  .hero-panel:hover {
+    transform: translateY(-4px);
+    border-color: #c4ceda;
+    box-shadow: 18px 23px 0 var(--blue-soft);
+  }
+  .portrait-frame:hover .portrait-image {
+    transform: scale(1.035);
+    filter: saturate(1.01) contrast(1.025);
+  }
+}
+.primary svg, .secondary svg, .nav-cta svg, .project-open svg, .project-source svg {
+  transition: transform 280ms cubic-bezier(.2,.75,.2,1);
+}
+@media (hover:hover) and (pointer:fine) {
+  .primary:hover svg, .nav-cta:hover svg,
+  .project-open:hover svg, .project-source:hover svg {
+    transform: translate(3px,-3px);
+  }
+}
+.nav nav a { position: relative; }
+.nav nav a::after {
+  content: "";
+  position: absolute;
+  height: 1px;
+  left: 0; right: 100%; bottom: -7px;
+  background: var(--blue);
+  transition: right 300ms ease;
+}
+.nav nav a:hover::after,
+.nav nav a:focus-visible::after { right: 0; }
+.section-heading h2 { text-wrap: balance; }
+@media(max-width:800px) {
+  .portrait-frame { height: clamp(300px, 48vw, 380px); }
+}
+@media(max-width:520px) {
+  .portrait-frame { height: clamp(285px, 78vw, 355px); }
+  .portrait-overlay { padding: 35px 15px 16px; font-size: 9px; gap: 8px; }
+}
+@media(prefers-reduced-motion:reduce) {
+  .portrait-image { animation: none !important; transition: none !important; }
+  .hero-panel, .primary svg, .secondary svg, .nav-cta svg,
+  .project-open svg, .project-source svg, .nav nav a::after { transition: none !important; }
+  .hero-panel:hover { transform: none; }
+  .portrait-frame:hover .portrait-image { transform: none; }
+}
