@@ -59,3 +59,9 @@ npm run preview   # sanity-check the production build locally
 - Verify the email address and LinkedIn profile link before publishing.
 
 This revision leaves the default branch unchanged until the pull request is reviewed and merged.
+
+## Visual direction — light editorial
+
+The selected redesign uses warm off-white surfaces, ink typography, restrained blue accents, a display serif for headings, stronger whitespace, and illustrative process diagrams made from semantic markup. Project case studies now appear before experience, with the first project featured in a larger layout.
+
+This direction intentionally favors legibility and recruiter usability over cursor effects or elaborate animation. The portfolio remains responsive and includes reduced-motion support. Verify the mobile layout, keyboard controls, and outbound links before merging the draft PR.
