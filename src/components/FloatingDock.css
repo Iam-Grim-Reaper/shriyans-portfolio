@@ -20,6 +20,12 @@
   backdrop-filter:blur(16px);
   white-space:nowrap;
   isolation:isolate;
+  transition:box-shadow .3s ease, border-color .3s ease, background-color .3s ease;
+}
+.floating-dock:hover,
+.floating-dock:focus-within{
+  border-color:rgba(255,255,255,.13);
+  box-shadow:0 13px 42px rgba(0,0,0,.29),inset 0 1px 0 rgba(255,255,255,.045);
 }
 .floating-dock__group{
   display:flex;
@@ -48,13 +54,14 @@
   text-decoration:none;
   cursor:pointer;
   outline-offset:3px;
-  transition:background-color .2s ease,transform .2s ease;
+  transition:background-color .2s ease, box-shadow .2s ease;
   -webkit-tap-highlight-color:transparent;
 }
 .floating-dock__item:hover,
 .floating-dock__item:focus-visible{
   color:#fff;
-  background:rgba(255,255,255,.105);
+  background:rgba(255,255,255,.12);
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.045);
 }
 .floating-dock__item:focus-visible{
   outline:2px solid rgba(255,255,255,.95);
@@ -64,11 +71,8 @@
   place-items:center;
   width:26px;
   height:26px;
-  transition:transform .22s cubic-bezier(.2,.8,.2,1);
-}
-.floating-dock__item:hover .floating-dock__icon,
-.floating-dock__item:focus-visible .floating-dock__icon{
-  transform:scale(1.035);
+  /* Motion's spring owns the transform; no competing CSS transform transition. */
+  will-change:transform;
 }
 .floating-dock__icon svg{
   display:block;
@@ -114,6 +118,13 @@
   .floating-dock__tooltip{font-size:12px;padding:8px 10px}
   .app-shell{padding-bottom:88px}
 }
+@media(hover:none), (pointer:coarse){
+  /* No cursor proximity on touch screens: retain the compact tap-friendly dock. */
+  .floating-dock__item{width:44px!important}
+  .floating-dock__icon{will-change:auto}
+  .floating-dock__item:hover{background:transparent;box-shadow:none}
+}
 @media(prefers-reduced-motion:reduce){
-  .floating-dock__item,.floating-dock__icon,.floating-dock__tooltip{transition:none}
+  .floating-dock,.floating-dock__item,.floating-dock__icon,.floating-dock__tooltip{transition:none}
+  .floating-dock__icon{will-change:auto}
 }
