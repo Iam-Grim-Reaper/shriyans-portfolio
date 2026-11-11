@@ -1,10 +1,22 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { House, NotebookPen, ScrollText } from 'lucide-react';
+import {
+  motion,
+  useMotionValue,
+  useReducedMotion,
+  useSpring,
+  useTransform,
+} from 'motion/react';
 import './FloatingDock.css';
 
-/** Reference-inspired five-item floating dock. This is the only primary navigation.
- *  It intentionally stays visible while the portfolio scrolls beneath it.
+/**
+ * Magnetic five-item dock modeled on the supplied Raashed hover recording.
+ * The dock expands organically as the pointer approaches each link, the
+ * active icon lifts, and its neighbors grow proportionally to proximity.
+ * There are no timers or expensive React state updates on pointermove.
  */
+const SPRING = { stiffness: 350, damping: 25, mass: 0.5 };
+
 function GithubMark() {
   return (
     <svg viewBox="0 0 24 24" width="23" height="23" fill="currentColor" aria-hidden="true">
@@ -23,54 +35,114 @@ function InstagramMark() {
   );
 }
 
-function DockLink({ label, href, children, external = false, current = false, onClick }) {
+function DockLink({ label, href, children, mouseX, external = false, current = false, onClick }) {
+  const ref = useRef(null);
+  const reducedMotion = useReducedMotion();
+
+  // Measure the current icon center, including the dock's own spring expansion.
+  // getBoundingClientRect is read only on pointer-value updates; no re-renders.
+  const distance = useTransform(mouseX, (x) => {
+    if (!Number.isFinite(x) || !ref.current) return 1000;
+    const rect = ref.current.getBoundingClientRect();
+    return Math.abs(x - (rect.left + rect.width / 2));
+  });
+
+  // Width drives actual flex layout: other icons move aside instead of overlapping.
+  const targetWidth = useTransform(distance, [0, 64, 145], [69, 56, 49]);
+  const targetLift = useTransform(distance, [0, 72, 150], [-5, -1, 0]);
+  const targetScale = useTransform(distance, [0, 72, 150], [1.15, 1.045, 1]);
+
+  const width = useSpring(targetWidth, SPRING);
+  const lift = useSpring(targetLift, SPRING);
+  const scale = useSpring(targetScale, SPRING);
+
+  function focusIcon(event) {
+    if (reducedMotion) return;
+    const rect = event.currentTarget.getBoundingClientRect();
+    mouseX.set(rect.left + rect.width / 2);
+  }
+
+  function blurIcon(event) {
+    // Focus may transfer directly to another icon, whose onFocus sets the next x.
+    const dock = event.currentTarget.closest('.floating-dock');
+    if (!dock?.contains(event.relatedTarget)) mouseX.set(Number.POSITIVE_INFINITY);
+  }
+
   return (
-    <a
+    <motion.a
+      ref={ref}
       className="floating-dock__item"
       href={href}
       aria-label={label}
       aria-current={current ? 'page' : undefined}
       onClick={onClick}
+      onFocus={focusIcon}
+      onBlur={blurIcon}
       target={external ? '_blank' : undefined}
       rel={external ? 'noopener noreferrer' : undefined}
+      style={reducedMotion ? undefined : { width }}
     >
-      <span className="floating-dock__icon" aria-hidden="true">{children}</span>
+      <motion.span
+        className="floating-dock__icon"
+        aria-hidden="true"
+        style={reducedMotion ? undefined : { y: lift, scale }}
+      >
+        {children}
+      </motion.span>
       <span className="floating-dock__tooltip" aria-hidden="true">{label}</span>
-    </a>
+    </motion.a>
   );
 }
 
 export default function FloatingDock({ resumeUrl }) {
   const path = window.location.pathname;
   const onPortfolio = path === '/';
+  const mouseX = useMotionValue(Number.POSITIVE_INFINITY);
+  const reducedMotion = useReducedMotion();
 
-  const scrollHome = (event) => {
+  function onPointerMove(event) {
+    if (reducedMotion || (event.pointerType !== 'mouse' && event.pointerType !== 'pen')) return;
+    mouseX.set(event.clientX);
+  }
+
+  function onPointerLeave() {
+    mouseX.set(Number.POSITIVE_INFINITY);
+  }
+
+  function scrollHome(event) {
     if (!onPortfolio) return;
     event.preventDefault();
-    const prefersReducedMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
-    window.scrollTo({ top: 0, behavior: prefersReducedMotion ? 'instant' : 'smooth' });
+    window.scrollTo({ top: 0, behavior: reducedMotion ? 'auto' : 'smooth' });
     if (window.location.hash) window.history.replaceState(null, '', '/');
-  };
+  }
+
+  const shared = { mouseX };
 
   return (
-    <nav className="floating-dock" aria-label="Portfolio quick navigation">
+    <nav
+      className="floating-dock"
+      aria-label="Portfolio quick navigation"
+      onPointerEnter={onPointerMove}
+      onPointerMove={onPointerMove}
+      onPointerLeave={onPointerLeave}
+    >
       <div className="floating-dock__group">
-        <DockLink label="Home" href="/" current={onPortfolio} onClick={scrollHome}>
+        <DockLink {...shared} label="Home" href="/" current={onPortfolio} onClick={scrollHome}>
           <House size={23} strokeWidth={2.05}/>
         </DockLink>
-        <DockLink label="Blogs" href="/blog" current={path.startsWith('/blog') || path === '/write'}>
+        <DockLink {...shared} label="Blogs" href="/blog" current={path.startsWith('/blog') || path === '/write'}>
           <NotebookPen size={23} strokeWidth={1.95}/>
         </DockLink>
       </div>
       <span className="floating-dock__divider" aria-hidden="true"/>
       <div className="floating-dock__group">
-        <DockLink label="Instagram" href="https://www.instagram.com/chio_kun/" external>
+        <DockLink {...shared} label="Instagram" href="https://www.instagram.com/chio_kun/" external>
           <InstagramMark />
         </DockLink>
-        <DockLink label="GitHub" href="https://github.com/Iam-Grim-Reaper" external>
+        <DockLink {...shared} label="GitHub" href="https://github.com/Iam-Grim-Reaper" external>
           <GithubMark />
         </DockLink>
-        <DockLink label="Resume" href={resumeUrl} external>
+        <DockLink {...shared} label="Resume" href={resumeUrl} external>
           <ScrollText size={23} strokeWidth={1.95}/>
         </DockLink>
       </div>
