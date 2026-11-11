@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { ArrowLeft, ArrowRight, ArrowUpRight, BookOpen, Check, LockKeyhole, PenLine, Save } from 'lucide-react';
 import './blog.css';
+import SketchNote from './SketchNotes.jsx';
 
 const OWNER = 'Iam-Grim-Reaper';
 const REPO = 'shriyans-portfolio';
@@ -92,6 +93,12 @@ export function MarkdownArticle({ content }) {
     }
     if (codeMode) { code.push(line); return; }
     if (!line.trim()) { flushParagraph(); flushList(); return; }
+    const sketch = line.trim().match(/^\[\[sketch:(modalities|pipeline|dimensions)\]\]$/);
+    if (sketch) {
+      flushParagraph(); flushList();
+      blocks.push(<SketchNote key={blocks.length} kind={sketch[1]}/>);
+      return;
+    }
     const heading = line.match(/^(#{1,3})\s+(.+)$/);
     if (heading) {
       flushParagraph(); flushList();
