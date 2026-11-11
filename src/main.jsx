@@ -180,20 +180,13 @@ function Hero() {
           I build things that make AI useful—from document intelligence and computer vision
           to the systems that turn models into working products.
         </p>
-        <div className="hero-actions">
-          <Magnetic className="primary" href="#projects">
-            View selected work <ArrowUpRight size={17}/>
-          </Magnetic>
-          <Magnetic className="secondary" href={resumePdf} target="_blank" rel="noopener noreferrer" aria-label="Open Shriyans Denis Swamy résumé PDF">
-            <FileDown size={17}/> View résumé
-          </Magnetic>
-          <Magnetic className="hero-inline-link" href="https://github.com/Iam-Grim-Reaper" target="_blank" rel="noopener noreferrer">
-            <Github size={16}/> GitHub <ArrowUpRight size={13}/>
-          </Magnetic>
-        </div>
         <div className="meta-row">
           <span><MapPin size={14}/> Hyderabad, India</span>
           <span>Open to AI/ML roles</span>
+        </div>
+        <div className="hero-scroll-cue" aria-label="Scroll down to explore the portfolio">
+          <span className="hero-scroll-cue-line" aria-hidden="true"><span /></span>
+          <span>SCROLL TO EXPLORE</span>
         </div>
       </motion.div>
       <motion.figure
