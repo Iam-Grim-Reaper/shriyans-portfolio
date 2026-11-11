@@ -409,3 +409,131 @@ button { cursor: pointer; }
 @media(prefers-reduced-motion:reduce) {
   .hero-inline-link { transition: none; }
 }
+
+
+/* November 2026: monochrome editorial direction inspired by Raashed's simplicity.
+   Original content and accessible navigation remain intact. */
+:root{
+  --paper:#ffffff;--surface:#ffffff;--soft:#f6f6f6;--ink:#111111;
+  --muted:#5b5b5b;--quiet:#797979;--line:#e8e8e8;--blue:#111111;
+  --blue-dark:#2b2b2b;--blue-soft:#f1f1f1;
+  --sans:'Geist',Arial,Helvetica,sans-serif;
+  --serif:'Geist',Arial,Helvetica,sans-serif;
+  --mono:'Geist Mono',ui-monospace,monospace;
+}
+html{scroll-padding-top:120px}
+body{background:#fff;color:#111}
+::selection{background:#202020;color:white}
+.app-shell{overflow:clip}
+.wrap{width:min(1120px,calc(100% - 64px))}
+.scroll-progress{background:#111}
+.nav.wrap{
+  position:sticky;top:14px;z-index:60;min-height:69px;
+  margin-top:14px;padding:10px 16px;border:1px solid #e8e8e8;
+  border-radius:18px;background:rgba(255,255,255,.94);
+  box-shadow:0 9px 28px rgba(0,0,0,.045);
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  display:flex;align-items:center;gap:24px;
+}
+.brand{gap:9px;min-width:225px;flex:none}
+.brand span{width:35px;height:35px;border-radius:11px;font-family:var(--mono);font-size:11px;letter-spacing:-.06em}
+.brand b{font:650 11px var(--sans);letter-spacing:-.02em;white-space:nowrap}
+.nav nav{
+  display:flex;flex-wrap:nowrap;gap:3px;align-items:center;
+  background:#f5f5f5;border:1px solid #f0f0f0;border-radius:999px;
+  padding:4px;white-space:nowrap;
+}
+.nav nav a{
+  padding:9px 12px;border-radius:999px;
+  color:#555;font:550 12px var(--sans);transition:background .2s,color .2s;
+}
+.nav nav a::after{display:none}
+.nav nav a:hover,.nav nav a:focus-visible{color:#111;background:#e9e9e9}
+.nav nav a[aria-current="page"]{background:#111;color:#fff}
+.nav-cta{
+  font-size:12px;letter-spacing:-.01em;border:1px solid #181818;
+  padding:9px 13px;border-radius:999px;background:#111;color:#fff;
+  margin-left:auto;
+}
+.nav-cta:hover{background:#383838}
+.hero{padding:120px 0 123px;gap:clamp(38px,6vw,80px)}
+.hero h1{
+  font:670 clamp(54px,6.55vw,93px)/1.035 var(--sans);
+  letter-spacing:-.077em;margin:25px 0 28px;
+}
+.hero h1 em{font:inherit;color:#101010;font-style:normal}
+.hero-copy{font-size:clamp(16px,1.4vw,18px);line-height:1.75;max-width:520px}
+.status{font-size:10px;letter-spacing:.14em;border-bottom:0;padding-bottom:0}
+.primary,.secondary{border-radius:999px;min-height:47px;font-size:12px}
+.primary:hover{background:#353535}
+.secondary{border:1px solid #dedede;padding:0 16px}
+.secondary:hover{border-color:#111;color:#111}
+.hero-inline-link:hover{color:#111}
+.meta-row{font-size:10px;letter-spacing:.025em;line-height:1.5}
+.hero-panel{border:1px solid #e6e6e6;border-radius:14px;overflow:hidden;box-shadow:0 18px 48px rgba(0,0,0,.06)}
+.hero-panel:hover{box-shadow:0 22px 52px rgba(0,0,0,.085)!important}
+.panel-top{font-size:9px}
+.panel-graphic{margin:14px}
+.portrait-frame{border-radius:8px}
+.panel-summary h2{font-size:28px;font-weight:620;letter-spacing:-.055em}
+.panel-summary .small-label{font-size:10px}
+.panel-capabilities div{font-size:12px}
+.signal-bar{background:#fafafa}
+.signal-inner{min-height:65px}
+.signal-inner i{background:#a7a7a7}
+.section{padding:100px 0}
+.kicker{font-size:10px;letter-spacing:.13em;margin-bottom:17px}
+.section-heading h2,.contact-section h2{
+  font:660 clamp(42px,4.8vw,66px)/1.09 var(--sans);
+  letter-spacing:-.065em;
+}
+.section-heading p,.contact-section p{font-size:15px;line-height:1.75}
+.project-card{border-radius:12px;transition:border-color .23s,box-shadow .23s,transform .23s}
+.project-card:hover{border-color:#d2d2d2;box-shadow:0 14px 35px rgba(0,0,0,.055);transform:translateY(-2px)}
+.project-card h3{font:630 clamp(28px,3vw,42px)/1.1 var(--sans);letter-spacing:-.052em}
+.project-visual{background:#f2f2f2!important;color:#202020}
+.diagram-node{background:#fff;color:#202020;border:1px solid #d4d4d4;border-radius:5px}
+.diagram-node.active{background:#151515;color:#fff;border-color:#151515}
+.visual-topline,.visual-bottomline{font-size:9px}
+.tags span,.skill-list span{border-radius:999px;color:#555;background:#fff}
+.project-video{padding:0!important;background:#111!important;min-height:270px;display:block;overflow:hidden}
+.project-video video,.project-video iframe{width:100%;height:100%;min-height:270px;border:0;display:block;object-fit:cover}
+.project-card:first-child .project-video{min-height:360px}
+.exp-head h3{font:630 clamp(27px,3vw,36px)/1.15 var(--sans);letter-spacing:-.055em}
+.skill{background:#fff;min-height:210px}
+.skill h4{font:640 24px var(--sans);letter-spacing:-.04em}
+.edu-card h3{font:640 28px/1.15 var(--sans);letter-spacing:-.045em}
+.contact-section{background:#fafafa}
+.contact-links,.contact-links a{border-color:#dedede}
+.contact-links a:hover{color:#000}
+.modal-card{border-radius:16px;background:white}
+.modal-card h3{font:660 clamp(36px,5vw,53px)/1.05 var(--sans);letter-spacing:-.055em}
+.footer{font-size:10px}
+@media(max-width:1040px){
+  .nav.wrap{gap:14px}
+  .brand{min-width:auto}
+  .brand b{display:none}
+  .nav nav a{padding:9px 11px}
+}
+@media(max-width:800px){
+  .nav.wrap{width:min(100% - 28px,1120px);padding:9px 11px;min-height:58px;flex-wrap:nowrap}
+  .nav nav{order:initial;width:auto;max-width:100%;justify-content:flex-start;overflow-x:auto;scrollbar-width:none;gap:0;flex:1;min-width:0}
+  .nav nav::-webkit-scrollbar{display:none}
+  .nav-cta{display:none}
+  .hero{padding:85px 0 85px}
+  .hero h1{font-size:clamp(54px,10vw,80px)}
+}
+@media(max-width:520px){
+  .wrap{width:min(100% - 32px,1120px)}
+  .nav.wrap{top:8px;margin-top:8px;gap:9px;border-radius:14px}
+  .brand span{width:31px;height:31px;font-size:10px;border-radius:9px}
+  .nav nav{padding:3px}
+  .nav nav a{font-size:11px;padding:8px 10px}
+  .hero h1{font-size:clamp(49px,11.5vw,66px)}
+  .hero{padding:62px 0}
+  .section-heading h2,.contact-section h2{font-size:clamp(39px,11vw,56px)}
+  .section{padding:72px 0}
+  .project-card:first-child .project-video{min-height:235px}
+  .project-video video,.project-video iframe{min-height:225px}
+}
+@media(prefers-reduced-motion:reduce){.project-card:hover{transform:none}}
