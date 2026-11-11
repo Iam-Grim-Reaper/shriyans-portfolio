@@ -1,0 +1,169 @@
+/* Minimal analog-memory carousel inside the existing slightly tilted hero Polaroid. */
+.memory-gallery{
+  width:min(100%,420px);
+  margin-inline:auto;
+  min-width:0;
+}
+.hero-polaroid.memory-polaroid{
+  width:100%;
+  margin:0;
+  padding:0;
+  border:0;
+  background:transparent;
+  box-shadow:none;
+  border-radius:0;
+  overflow:visible;
+}
+.memory-stage{
+  position:relative;
+  width:100%;
+  aspect-ratio:.765;
+  outline-offset:7px;
+  perspective:1300px;
+  transform-style:preserve-3d;
+  cursor:grab;
+  touch-action:pan-y;
+  -webkit-user-select:none;
+  user-select:none;
+}
+.memory-stage:active{cursor:grabbing}
+.memory-stage:focus-visible{outline:2px solid #111}
+.memory-stage::before,.memory-stage::after{
+  content:'';
+  position:absolute;
+  z-index:0;
+  inset:5px 5px 0;
+  background:#fff;
+  border:1px solid #ececec;
+  border-radius:2px;
+  pointer-events:none;
+}
+.memory-stage::before{
+  transform:translate(11px,4px) rotate(3.2deg);
+  box-shadow:0 12px 22px rgba(0,0,0,.055);
+}
+.memory-stage::after{
+  transform:translate(5px,2px) rotate(1.4deg);
+  box-shadow:0 8px 18px rgba(0,0,0,.065);
+}
+.memory-sheet{
+  position:absolute;
+  inset:0;
+  display:flex;
+  flex-direction:column;
+  padding:14px 14px 13px;
+  background:#fff;
+  border:1px solid #e9e9e9;
+  border-radius:2px;
+  overflow:hidden;
+  box-shadow:0 16px 36px rgba(0,0,0,.105),0 3px 9px rgba(0,0,0,.045);
+  -webkit-backface-visibility:hidden;
+  backface-visibility:hidden;
+  will-change:transform,opacity;
+}
+.memory-photo{
+  flex:1 1 auto;
+  min-height:0;
+  width:100%;
+  overflow:hidden;
+  background:#f3f3f3;
+}
+.memory-photo img{
+  display:block;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  object-position:center 35%;
+  pointer-events:none;
+}
+.hero-polaroid .memory-caption{
+  flex:0 0 67px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  margin:0;
+  padding:7px 13px 0;
+  color:#363636;
+  text-align:center;
+  font:italic 17px/1.35 Georgia,'Times New Roman',serif;
+  letter-spacing:-.014em;
+}
+.memory-controls{
+  margin:23px auto 0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:22px;
+}
+.memory-arrow{
+  width:39px;
+  height:39px;
+  display:grid;
+  place-items:center;
+  flex:none;
+  border-radius:50%;
+  border:1px solid #dedede;
+  color:#171717;
+  background:white;
+  cursor:pointer;
+  transition:background-color .2s,border-color .2s,transform .2s,box-shadow .2s;
+}
+.memory-arrow:hover:not(:disabled){
+  background:#171717;
+  border-color:#171717;
+  color:#fff;
+  transform:translateY(-2px);
+  box-shadow:0 5px 14px rgba(0,0,0,.12);
+}
+.memory-arrow:focus-visible{outline:2px solid #111;outline-offset:3px}
+.memory-arrow:disabled{opacity:.5;cursor:default}
+.memory-progress{
+  width:92px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:9px;
+}
+.memory-count{
+  color:#474747;
+  font:500 10px/1 var(--mono,monospace);
+  letter-spacing:.14em;
+  font-variant-numeric:tabular-nums;
+}
+.memory-count span{margin:0 4px;color:#aaa}
+.memory-progress-track{
+  display:block;
+  position:relative;
+  width:80px;
+  height:2px;
+  overflow:hidden;
+  background:#e3e3e3;
+}
+.memory-progress-track>span{
+  display:block;
+  height:100%;
+  background:#1e1e1e;
+  transition:width .42s cubic-bezier(.2,.8,.2,1);
+}
+.memory-hint{
+  display:block;
+  text-align:center;
+  margin-top:11px;
+  color:#969696;
+  font:400 10px/1.5 var(--mono,monospace);
+  letter-spacing:.025em;
+}
+@media(max-width:800px){
+  .memory-gallery{width:min(90%,430px)}
+}
+@media(max-width:520px){
+  .memory-gallery{width:min(94%,360px)}
+  .memory-sheet{padding:11px 11px 10px}
+  .hero-polaroid .memory-caption{flex-basis:60px;font-size:15px;padding-inline:8px}
+  .memory-controls{margin-top:21px}
+  .memory-hint{font-size:9px}
+}
+@media(prefers-reduced-motion:reduce){
+  .memory-arrow,.memory-progress-track>span{transition:none}
+  .memory-sheet{will-change:auto}
+}
