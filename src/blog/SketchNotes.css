@@ -1,0 +1,71 @@
+/* Hand-drawn explainer cards for long-form writing. Original SVG artwork.
+   Each stroke is revealed only when its figure intersects the viewport. */
+.sketch-note{
+  margin:44px 0 52px;
+  width:100%;
+  max-width:100%;
+}
+.sketch-paper{
+  border:1px solid #e5e2dc;
+  border-radius:3px;
+  background:linear-gradient(0deg,rgba(251,250,245,.96),rgba(251,250,245,.96)),
+    repeating-linear-gradient(0deg,transparent,transparent 30px,rgba(31,31,31,.05) 31px);
+  box-shadow:0 14px 35px rgba(33,27,17,.045);
+  overflow:hidden;
+  padding:24px 24px 18px;
+}
+.sketch-paper-top{
+  display:flex;justify-content:space-between;gap:12px;
+  font:500 10px/1.35 var(--mono,monospace);
+  letter-spacing:.1em;color:#77746d;
+}
+.sketch-svg{
+  display:block;
+  width:100%;
+  max-width:100%;
+  height:auto;
+  margin:3px auto -3px;
+  overflow:visible;
+}
+.sketch-ink{fill:none;stroke:#252525;stroke-linecap:round;stroke-linejoin:round}
+.sketch-ink path{
+  stroke-dasharray:1000;
+  stroke-dashoffset:1000;
+  transition:stroke-dashoffset 1.55s cubic-bezier(.28,.68,.18,1);
+}
+.sketch-ink path:nth-child(3n+2){transition-delay:.22s}
+.sketch-ink path:nth-child(4n+3){transition-delay:.4s}
+.sketch-ink circle{stroke-dasharray:900;stroke-dashoffset:900;transition:stroke-dashoffset .95s ease .55s}
+.sketch-note.is-visible .sketch-ink path,
+.sketch-note.is-visible .sketch-ink circle{stroke-dashoffset:0}
+.sketch-lettering{
+  fill:#252525;
+  font:500 24px 'Caveat','Comic Sans MS',cursive;
+  opacity:0;
+  transform:translateY(6px);
+  transition:opacity .5s ease 1s,transform .5s ease 1s;
+}
+.sketch-bold{font-weight:700;font-size:27px}
+.sketch-note.is-visible .sketch-lettering{opacity:1;transform:translateY(0)}
+.sketch-hand-caption{
+  margin:2px 0 0!important;
+  text-align:center;
+  color:#55524c!important;
+  font:600 clamp(19px,3vw,27px)/1.25 'Caveat','Comic Sans MS',cursive!important;
+}
+.sketch-note>figcaption{
+  font:400 10px/1.6 var(--mono,monospace);
+  color:#999;
+  text-align:center;
+  margin:11px 0 0;
+}
+@media(max-width:700px){
+  .sketch-note{margin:31px 0 42px}
+  .sketch-paper{padding:15px 11px 15px}
+  .sketch-paper-top{font-size:8px}
+  .sketch-lettering{font-size:26px}
+}
+@media(prefers-reduced-motion:reduce){
+  .sketch-ink path,.sketch-ink circle{stroke-dashoffset:0!important;transition:none!important}
+  .sketch-lettering{opacity:1!important;transform:none!important;transition:none!important}
+}
