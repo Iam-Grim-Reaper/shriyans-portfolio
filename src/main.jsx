@@ -7,6 +7,7 @@ import shreyPortrait from '../shrey.jpeg';
 import resumePdf from '../Shriyans Denis Resume.pdf?url';
 import './styles.css';
 import BlogPage, { BlogTeaser } from './blog/Blog.jsx';
+import FloatingDock from './components/FloatingDock.jsx';
 
 // lucide-react dropped brand/logo marks (trademark policy), so GitHub & LinkedIn
 // are hand-drawn to match lucide's stroke-based icon style.
@@ -192,13 +193,7 @@ function App(){
     <a className="skip-link" href="#top">Skip to main content</a>
     <div className="noise" aria-hidden="true" />
     <ScrollProgress />
-    <header className="nav wrap">
-      <a className="brand" href="/"><span>SD</span><b>SHRIYANS DENIS SWAMY</b></a>
-      <nav aria-label="Main navigation">
-        <a href="/" aria-current={!isBlogRoute ? "page" : undefined}>Home</a><a href="/#projects">Projects</a><a href="/#work">Experience</a><a href="/#skills">Skills</a><a href="/blog" aria-current={isBlogRoute ? "page" : undefined}>Blog</a><a href="/#contact">Contact</a>
-      </nav>
-      <Magnetic className="nav-cta" href={resumePdf} target="_blank" rel="noopener noreferrer">Résumé <ArrowUpRight size={15}/></Magnetic>
-    </header>
+    <FloatingDock resumeUrl={resumePdf} />
 
     <main id="top" tabIndex="-1">
       {isBlogRoute ? <BlogPage /> : <>
