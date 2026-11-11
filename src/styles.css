@@ -537,3 +537,140 @@ body{background:#fff;color:#111}
   .project-video video,.project-video iframe{min-height:225px}
 }
 @media(prefers-reduced-motion:reduce){.project-card:hover{transform:none}}
+
+
+/* Home editorial refresh — 12 Nov 2026.
+   Deliberately scoped to hero/typewriter/Polaroid; magnetic dock is untouched. */
+.hero-refined {
+  grid-template-columns: minmax(0, 1.18fr) minmax(300px, .82fr);
+  align-items: center;
+  gap: clamp(42px, 5.5vw, 88px);
+  padding-top: clamp(85px, 8vw, 126px);
+  padding-bottom: clamp(90px, 9vw, 136px);
+}
+.hero-refined .hero-left { min-width: 0; }
+.hero-refined .status {
+  padding: 0;
+  margin: 0 0 25px;
+  font: 500 10px/1.5 var(--mono);
+  letter-spacing: .15em;
+  color: #656565;
+}
+.typewriter-block { width: 100%; }
+.typewriter-greeting {
+  color: #424242;
+  font: 500 clamp(13px, 1.05vw, 16px)/1.65 var(--mono);
+  letter-spacing: -.015em;
+  min-height: 1.65em;
+  margin: 0 0 12px;
+}
+.hero-refined .typewriter-name {
+  font: 670 clamp(49px, 5.85vw, 87px)/1.06 var(--sans);
+  letter-spacing: -.07em;
+  color: #111;
+  margin: 0 0 29px;
+  max-width: none;
+}
+.typewriter-line {
+  display: block;
+  position: relative;
+  max-width: 100%;
+  width: max-content;
+  white-space: nowrap;
+}
+.typewriter-ghost {
+  display: block;
+  visibility: hidden;
+  white-space: nowrap;
+}
+.typewriter-visible {
+  position: absolute;
+  top: 0;
+  left: 0;
+  white-space: nowrap;
+  color: #111;
+}
+.typewriter-caret {
+  display: inline-block;
+  width: .065em;
+  height: .78em;
+  background: currentColor;
+  vertical-align: -.045em;
+  margin-left: .045em;
+  animation: typewriter-caret-blink .85s steps(1) infinite;
+}
+@keyframes typewriter-caret-blink { 50% { opacity: 0; } }
+.hero-refined .hero-copy {
+  max-width: 520px;
+  color: #555;
+  font-size: clamp(16px, 1.35vw, 18px);
+  line-height: 1.8;
+}
+.hero-refined .hero-actions { margin-top: 35px; }
+.hero-refined .meta-row { margin-top: 29px; }
+.hero-polaroid {
+  position: relative;
+  width: min(100%, 420px);
+  margin: 0 auto;
+  padding: 14px 14px 38px;
+  background: #fff;
+  border: 1px solid #ebebeb;
+  box-shadow: 0 18px 40px rgba(0,0,0,.105), 0 3px 8px rgba(0,0,0,.045);
+  border-radius: 2px;
+  transform-origin: 50% 55%;
+}
+.polaroid-photo {
+  position: relative;
+  overflow: hidden;
+  background: #f1f1f1;
+  aspect-ratio: 1 / 1.11;
+}
+.polaroid-photo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 32%;
+}
+.hero-polaroid figcaption {
+  margin-top: 24px;
+  text-align: center;
+  color: #383838;
+  font: italic 17px/1.4 Georgia, 'Times New Roman', serif;
+  letter-spacing: -.012em;
+}
+@media (max-width: 1020px) {
+  .hero-refined {
+    grid-template-columns: minmax(0, 1.1fr) minmax(280px, .9fr);
+    gap: 32px;
+  }
+  .hero-refined .typewriter-name { font-size: clamp(43px, 6vw, 72px); }
+}
+@media (max-width: 800px) {
+  .hero-refined {
+    grid-template-columns: 1fr;
+    padding: 74px 0 86px;
+    gap: 58px;
+  }
+  .hero-refined .typewriter-name { font-size: clamp(48px, 8.7vw, 73px); }
+  .hero-polaroid { width: min(90%, 430px); }
+}
+@media (max-width: 520px) {
+  .hero-refined { padding: 56px 0 72px; gap: 43px; }
+  .hero-refined .status { font-size: 9px; letter-spacing: .1em; margin-bottom: 20px; }
+  .hero-refined .typewriter-name {
+    font-size: clamp(37px, 10.3vw, 52px);
+    letter-spacing: -.069em;
+    margin-bottom: 24px;
+  }
+  .typewriter-greeting { font-size: 12px; margin-bottom: 9px; }
+  .hero-refined .hero-copy { font-size: 16px; line-height: 1.75; }
+  .hero-polaroid { width: min(94%, 360px); padding: 11px 11px 30px; }
+  .hero-polaroid figcaption { font-size: 15px; margin-top: 20px; }
+}
+@media (max-width: 365px) {
+  .hero-refined .typewriter-name { font-size: 35px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .typewriter-caret { animation: none; }
+}
