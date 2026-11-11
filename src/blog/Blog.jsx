@@ -71,7 +71,6 @@ export function MarkdownArticle({ content }) {
   let list = [];
   let code = [];
   let codeMode = false;
-  let codeLanguage = '';
   function flushParagraph() {
     if (paragraph.length) blocks.push(<p key={blocks.length}><Inline text={paragraph.join(' ')}/></p>);
     paragraph = [];
@@ -81,13 +80,13 @@ export function MarkdownArticle({ content }) {
     list = [];
   }
   lines.forEach((line) => {
-    if (line.startsWith('~~~')) {
+    if (line.startsWith('~~~') || line.startsWith('```')) {
       flushParagraph(); flushList();
       if (codeMode) {
         blocks.push(<pre key={blocks.length}><code>{code.join('\n')}</code></pre>);
         code = []; codeMode = false;
       } else {
-        codeMode = true; codeLanguage = line.slice(3).trim();
+        codeMode = true;
       }
       return;
     }
