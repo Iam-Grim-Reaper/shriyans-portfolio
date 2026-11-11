@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { createRoot } from 'react-dom/client';
-import { motion, AnimatePresence, MotionConfig, useScroll } from 'motion/react';
+import { motion, AnimatePresence, MotionConfig, useScroll, useReducedMotion } from 'motion/react';
 import { ArrowUpRight, Mail, MapPin, FileDown, Sparkles, Trophy, ChevronRight, X, Target, Wrench, TrendingUp } from 'lucide-react';
 import { projects, skills, experiences, credentials } from './data/portfolio.js';
 import shreyPortrait from '../shrey.jpeg';
@@ -111,47 +111,108 @@ function ProjectModal({ project, onClose }) {
   );
 }
 
+function TypewriterHeading() {
+  const greeting = 'Hi there, I am';
+  const firstLine = 'Shriyans Denis';
+  const secondLine = 'Swamy.';
+  const total = greeting.length + firstLine.length + secondLine.length;
+  const reducedMotion = useReducedMotion();
+  const [typed, setTyped] = useState(0);
+
+  useEffect(() => {
+    if (reducedMotion) {
+      setTyped(total);
+      return undefined;
+    }
+
+    setTyped(0);
+    let current = 0;
+    const interval = window.setInterval(() => {
+      current += 1;
+      setTyped(current);
+      if (current >= total) window.clearInterval(interval);
+    }, 62);
+    return () => window.clearInterval(interval);
+  }, [reducedMotion, total]);
+
+  const greetingText = greeting.slice(0, typed);
+  const firstCount = Math.max(0, typed - greeting.length);
+  const secondCount = Math.max(0, typed - greeting.length - firstLine.length);
+
+  return (
+    <div className="typewriter-block">
+      <p className="typewriter-greeting" aria-hidden="true">
+        {greetingText}
+        {typed < greeting.length && <span className="typewriter-caret" />}
+      </p>
+      <h1 className="typewriter-name" aria-label="Hi there, I am Shriyans Denis Swamy.">
+        <span className="typewriter-line">
+          <span className="typewriter-ghost" aria-hidden="true">{firstLine}</span>
+          <span className="typewriter-visible" aria-hidden="true">
+            {firstLine.slice(0, firstCount)}
+            {typed >= greeting.length && typed < greeting.length + firstLine.length && <span className="typewriter-caret" />}
+          </span>
+        </span>
+        <span className="typewriter-line">
+          <span className="typewriter-ghost" aria-hidden="true">{secondLine}</span>
+          <span className="typewriter-visible" aria-hidden="true">
+            {secondLine.slice(0, secondCount)}
+            {typed >= greeting.length + firstLine.length && <span className="typewriter-caret" />}
+          </span>
+        </span>
+      </h1>
+    </div>
+  );
+}
+
 function Hero() {
   return (
-    <section className="hero wrap">
-      <motion.div initial={{opacity:0,y:14}} animate={{opacity:1,y:0}} transition={{duration:.55}} className="hero-left">
-        <div className="status">AI SOFTWARE ENGINEER / GENERATIVE AI / BACKEND</div>
-        <h1>Shriyans Denis<br/><em>Swamy.</em></h1>
-        <p className="hero-copy">I build intelligent applications across agentic RAG, computer vision, and backend engineering—connecting retrieval systems and AI models to useful product experiences.</p>
+    <section className="hero hero-refined wrap">
+      <motion.div
+        className="hero-left"
+        initial={{ opacity: 0, y: 12 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: .5 }}
+      >
+        <div className="status">AI ENGINEER / RESEARCH &amp; PRODUCT</div>
+        <TypewriterHeading />
+        <p className="hero-copy">
+          I build things that make AI useful—from document intelligence and computer vision
+          to the systems that turn models into working products.
+        </p>
         <div className="hero-actions">
-          <Magnetic className="primary" href="#projects">View selected work <ArrowUpRight size={17}/></Magnetic>
-          <Magnetic className="secondary" href={resumePdf} target="_blank" rel="noopener noreferrer" aria-label="Open Shriyans Denis résumé PDF"><FileDown size={17}/> View résumé</Magnetic>
-          <Magnetic className="hero-inline-link" href="https://github.com/Iam-Grim-Reaper" target="_blank" rel="noopener noreferrer"><Github size={16}/> GitHub <ArrowUpRight size={13}/></Magnetic>
+          <Magnetic className="primary" href="#projects">
+            View selected work <ArrowUpRight size={17}/>
+          </Magnetic>
+          <Magnetic className="secondary" href={resumePdf} target="_blank" rel="noopener noreferrer" aria-label="Open Shriyans Denis Swamy résumé PDF">
+            <FileDown size={17}/> View résumé
+          </Magnetic>
+          <Magnetic className="hero-inline-link" href="https://github.com/Iam-Grim-Reaper" target="_blank" rel="noopener noreferrer">
+            <Github size={16}/> GitHub <ArrowUpRight size={13}/>
+          </Magnetic>
         </div>
-        <div className="meta-row"><span><MapPin size={14}/> Hyderabad, India</span><span>B.Tech AI · 2026</span><span>Open to AI/ML roles</span></div>
+        <div className="meta-row">
+          <span><MapPin size={14}/> Hyderabad, India</span>
+          <span>Open to AI/ML roles</span>
+        </div>
       </motion.div>
-      <aside className="hero-panel" aria-label="Portrait and engineering focus areas">
-        <div className="panel-top"><span>BEHIND THE WORK</span><span>PROFILE / 01</span></div>
-        <div className="panel-graphic portrait-frame">
+      <motion.figure
+        className="hero-polaroid"
+        initial={{ opacity: 0, y: 20, rotate: 1.5 }}
+        animate={{ opacity: 1, y: 0, rotate: -2 }}
+        transition={{ duration: .8, ease: [.2, .7, .2, 1], delay: .1 }}
+      >
+        <div className="polaroid-photo">
           <img
             src={shreyPortrait}
-            alt="Portrait of Shriyans Denis outdoors"
-            className="portrait-image"
+            alt="Shriyans Denis Swamy at KBR Park in Hyderabad"
             fetchPriority="high"
             loading="eager"
             decoding="async"
           />
-          <div className="portrait-overlay" aria-hidden="true">
-            <span>SHRIYANS DENIS SWAMY</span>
-            <span>AI ENGINEER / HYDERABAD</span>
-          </div>
         </div>
-        <div className="panel-summary">
-          <div className="small-label">FROM MODEL TO PRODUCT</div>
-          <h2>Building across the AI stack.</h2>
-          <p>Agentic retrieval, computer vision, and reliable full-stack delivery.</p>
-        </div>
-        <div className="panel-capabilities">
-          <div><span>01</span> Agentic RAG &amp; retrieval</div>
-          <div><span>02</span> AI backends &amp; APIs</div>
-          <div><span>03</span> Computer vision &amp; ML</div>
-        </div>
-      </aside>
+        <figcaption>This photo was taken in KBR Park.</figcaption>
+      </motion.figure>
     </section>
   );
 }
@@ -199,12 +260,8 @@ function App(){
       {isBlogRoute ? <BlogPage /> : <>
        <Hero />
 
-      <section className="signal-bar">
-        <div className="wrap signal-inner"><span>AGENTIC RAG</span><i/><span>LANGGRAPH</span><i/><span>FASTAPI</span><i/><span>QDRANT</span><i/><span>NEO4J</span><i/><span>COMPUTER VISION</span></div>
-      </section>
-
       <section id="projects" className="section wrap">
-        <SectionTitle kicker="01 / SELECTED WORK" title="Selected work, engineered for impact." copy="From agentic research workflows to explainable computer vision—explore how the systems are designed and where to find the code." />
+        <SectionTitle kicker="01 / SELECTED WORK" title="Selected work." copy="A closer look at the problems, design choices, and code behind three projects." />
         <div className="projects-grid">
           {projects.map((p,idx)=><motion.article
             key={p.num}
@@ -216,7 +273,7 @@ function App(){
           >
             <ProjectVisual project={p} />
             <div className="project-content">
-            <div className="project-top"><span>PROJECT // {p.num}</span><span>{p.accent}</span></div>
+            <div className="project-top"><span>PROJECT // {p.num}</span></div>
             <div className="project-label">{p.label}</div>
             <h3>{p.title}</h3>
             <p>{p.copy}</p>
@@ -233,7 +290,7 @@ function App(){
       </section>
 
       <section id="work" className="section wrap">
-        <SectionTitle kicker="02 / EXPERIENCE" title="Engineering experience across AI products." copy="Current application engineering at Altaric Consulting, alongside AI research and inference work at ISRO NRSC." />
+        <SectionTitle kicker="02 / EXPERIENCE" title="Where I’ve worked." copy="From production application development to computer-vision research." />
         {experiences.map((experience, index) => (
           <motion.article
             key={experience.organization}
@@ -259,17 +316,17 @@ function App(){
       </section>
 
       <section id="skills" className="section wrap">
-        <SectionTitle kicker="03 / TECHNICAL STACK" title="Tools behind the work." />
+        <SectionTitle kicker="03 / TECHNICAL STACK" title="What I work with." />
         <div className="skills-grid">{skills.map(([n,title,items],idx)=><motion.div className="skill" key={n} initial={{opacity:0,y:14}} whileInView={{opacity:1,y:0}} viewport={{once:true, margin:'-40px'}} transition={{duration:.45, delay:(idx%3)*.06}}><div className="skill-num">{n}</div><h4>{title}</h4><div className="skill-list">{items.map(i=><span key={i}>{i}</span>)}</div></motion.div>)}</div>
       </section>
 
       <section className="section wrap education">
         <div>
-          <SectionTitle kicker="04 / EDUCATION" title="A foundation in Artificial Intelligence." />
+          <SectionTitle kicker="04 / EDUCATION" title="Education." />
           <motion.div className="edu-card" initial={{opacity:0,y:14}} whileInView={{opacity:1,y:0}} viewport={{once:true}} transition={{duration:.5}}><span>OCT 2022 — MAY 2026</span><h3>B.Tech in Artificial Intelligence</h3><p>Vidya Jyothi Institute of Technology · Hyderabad</p><b>CGPA 8.01 / 10</b></motion.div>
         </div>
         <div>
-          <SectionTitle kicker="05 / RECOGNITION" title="Certifications, leadership & achievements." />
+          <SectionTitle kicker="05 / RECOGNITION" title="Beyond the code." />
           <div className="signal-list">
             {credentials.map((item,index) => (
               <motion.div
@@ -290,7 +347,7 @@ function App(){
       <BlogTeaser />
        <section id="contact" className="contact-section">
         <div className="wrap contact-grid">
-          <div><div className="kicker">06 / CONTACT</div><h2>Let’s build something<br/>useful with AI.</h2><p>Open to opportunities spanning Generative AI, agentic systems, computer vision, and backend engineering. Explore my work or download the latest résumé.</p></div>
+          <div><div className="kicker">06 / CONTACT</div><h2>Have something<br/>in mind?</h2><p>For an engineering opportunity, a collaboration, or a question about a project, feel free to get in touch.</p></div>
           <div className="contact-links">
             <Magnetic strength={10} href="mailto:shriyansdoespython@gmail.com"><Mail/>shriyansdoespython@gmail.com<ArrowUpRight/></Magnetic>
             <Magnetic strength={10} href="https://linkedin.com/in/shriyansdenis" target="_blank" rel="noreferrer"><Linkedin/>LinkedIn<ArrowUpRight/></Magnetic>
