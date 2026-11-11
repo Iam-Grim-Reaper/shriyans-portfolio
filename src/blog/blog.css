@@ -1,0 +1,86 @@
+
+/* Public writing and owner editor — monochrome editorial styling */
+.blog-layout,.blog-article,.blog-editor{min-height:65vh}
+.blog-layout{max-width:890px;padding:106px 0 160px}
+.blog-intro{padding-bottom:92px}
+.blog-intro h1,.blog-editor h1{font-size:clamp(68px,9vw,122px);line-height:1;letter-spacing:-.08em;margin:17px 0 28px;font-weight:650}
+.blog-period{color:#767676}
+.blog-intro>p{max-width:600px;color:var(--muted);line-height:1.75;font-size:17px}
+.blog-list-heading{display:flex;justify-content:space-between;border-bottom:1px solid var(--ink);padding:12px 0;font:500 11px var(--mono);letter-spacing:.11em}
+.writing-list{display:flex;flex-direction:column}
+.writing-row{display:flex;justify-content:space-between;align-items:center;gap:32px;padding:34px 2px 37px;border-bottom:1px solid var(--line);text-decoration:none;transition:padding .25s,background .25s}
+.writing-row:hover{padding-left:10px}
+.writing-row>svg{flex:none;transition:transform .2s}
+.writing-row:hover>svg{transform:translate(4px,-4px)}
+.writing-row h3{margin:13px 0 10px;font-size:clamp(20px,2.5vw,28px);font-weight:630;line-height:1.3;letter-spacing:-.035em}
+.writing-row p{margin:0;color:var(--muted);font-size:14px;max-width:690px;line-height:1.7}
+.writing-meta{font:500 11px var(--mono);letter-spacing:.025em;color:var(--quiet)}
+.writing-meta span{margin-inline:8px;color:#b5b5b5}
+.writing-empty,.blog-empty{border-bottom:1px solid var(--line);padding:44px 0;color:var(--muted);font-size:15px}
+.blog-empty{min-height:275px;display:flex;flex-direction:column;align-items:flex-start;justify-content:center}
+.blog-empty svg{color:var(--quiet)}
+.blog-empty h2{font-size:24px;color:var(--ink);font-weight:650;letter-spacing:-.04em;margin:16px 0 0}
+.blog-empty p{max-width:450px;line-height:1.65}
+.blog-home-link{display:inline-flex;align-items:center;gap:9px;text-decoration:none;font-size:13px;font-weight:550;margin-top:38px}
+.blog-home-link:hover{text-decoration:underline}
+.blog-article{max-width:790px;padding:72px 0 150px}
+.blog-article>.blog-home-link{margin:0 0 72px}
+.blog-article>h1{font-size:clamp(44px,5.5vw,70px);line-height:1.1;letter-spacing:-.06em;font-weight:670;margin:22px 0 19px}
+.blog-subtitle{font-size:19px;line-height:1.6;color:var(--muted);max-width:690px}
+.blog-byline{display:flex;align-items:center;gap:12px;padding:30px 0;margin:43px 0;border-block:1px solid var(--line)}
+.byline-avatar{width:40px;height:40px;border-radius:50%;background:#111;color:#fff;display:grid;place-items:center;font:500 12px var(--mono)}
+.blog-byline div{display:grid;gap:3px}
+.blog-byline strong{font-size:13px}
+.blog-byline small{font-size:11px;color:var(--quiet)}
+.article-body{font-size:16px;line-height:1.85;color:#272727;overflow-wrap:anywhere}
+.article-body p{margin:0 0 25px}
+.article-body h2,.article-body h3,.article-body h4{font-weight:670;letter-spacing:-.043em;color:#111;line-height:1.25;margin:50px 0 20px}
+.article-body h2{font-size:32px}.article-body h3{font-size:26px}.article-body h4{font-size:21px}
+.article-body ul{padding-left:24px;margin-bottom:28px}
+.article-body li{padding-left:6px;margin-bottom:11px}
+.article-body a{text-decoration-thickness:1px;text-underline-offset:4px}
+.article-body blockquote{border-left:3px solid #222;margin:30px 0;padding:6px 0 6px 23px;color:var(--muted)}
+.article-body pre{max-width:100%;overflow:auto;background:#111;color:#f7f7f7;padding:22px 24px;border-radius:10px;font:13px/1.7 var(--mono);margin:30px 0}
+.article-body code:not(pre code){font:13px var(--mono);padding:2px 5px;background:#f1f1f1;border-radius:3px}
+.article-body hr{border:none;border-top:1px solid var(--line);margin:40px 0}
+.blog-end{margin-top:85px;padding-top:30px;border-top:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:18px}
+.blog-end p{font-size:14px;color:var(--muted)}
+.blog-end a{display:flex;align-items:center;gap:8px;text-decoration:none;font-size:13px;font-weight:600}
+.blog-editor{max-width:890px;padding:50px 0 145px}
+.blog-editor h1{margin-bottom:40px;font-size:clamp(58px,7vw,96px)}
+.editor-auth{max-width:630px;padding:35px;border:1px solid var(--line);border-radius:12px;background:#fff}
+.editor-auth h2{font-size:25px;margin:18px 0 11px}
+.editor-auth>p{font-size:14px;line-height:1.8;color:var(--muted)}
+.editor-auth form{display:flex;flex-direction:column;gap:12px;margin-top:27px}
+.editor-auth label,.editor-form label{font-size:13px;font-weight:650}
+.editor-auth input,.editor-form input,.editor-form textarea{width:100%;border:1px solid #d9d9d9;border-radius:6px;padding:13px 15px;background:#fff;color:#111;font:14px var(--sans);outline:none}
+.editor-auth input:focus,.editor-form input:focus,.editor-form textarea:focus{border-color:#111;box-shadow:0 0 0 2px #eee}
+.editor-button{display:inline-flex;align-items:center;justify-content:center;gap:12px;background:#111;color:#fff;border:1px solid #111;padding:12px 18px;border-radius:6px;min-height:47px;font-size:13px;font-weight:650}
+.editor-button:hover:not(:disabled){background:#383838}
+.editor-button:disabled{opacity:.55;cursor:wait}
+.editor-help{display:inline-flex;align-items:center;gap:6px;margin-top:22px;font-size:12px;color:var(--muted)}
+.editor-error{color:#9b172b;background:#fff4f5;border:1px solid #f4d1d7;padding:13px 16px;border-radius:6px;font-size:13px}
+.editor-success{display:flex;align-items:center;gap:9px;background:#f3faf5;border:1px solid #c8e7d0;padding:13px 16px;border-radius:6px;font-size:13px;margin-bottom:20px}
+.editor-tabs{display:flex;align-items:center;border-bottom:1px solid var(--line);gap:4px;margin-bottom:31px}
+.editor-tabs button{padding:15px 18px;display:inline-flex;align-items:center;gap:8px;background:none;border:0;border-bottom:2px solid transparent;font-weight:600;font-size:13px;color:var(--muted)}
+.editor-tabs button.selected{color:#111;border-bottom-color:#111}
+.editor-tabs .editor-signout{margin-left:auto;font-weight:450}
+.editor-form{display:flex;flex-direction:column;gap:23px}
+.editor-form label{display:flex;flex-direction:column;gap:9px}
+.editor-form label span{font-size:11px;color:var(--quiet);font-weight:400}
+.editor-form textarea{resize:vertical;line-height:1.8;font-family:var(--mono);font-size:13px}
+.editor-submit{display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap}
+.editor-submit>span{font-size:12px;color:var(--muted)}
+.editor-existing{border-top:1px solid var(--line);margin-top:70px;padding-top:25px}
+.editor-existing h2{font-size:20px;margin:0 0 15px}
+.editor-existing>button{display:flex;justify-content:space-between;align-items:center;width:100%;border:0;border-bottom:1px solid var(--line);background:none;padding:18px 0;text-align:left;gap:20px}
+.editor-existing>button small{display:inline-flex;align-items:center;gap:5px;flex:none;color:var(--muted)}
+.editor-existing>p{color:var(--muted);font-size:13px}
+.editor-preview{padding:20px 0 15px}.editor-preview>h2{font-size:clamp(36px,5vw,58px);letter-spacing:-.045em;margin:18px 0}
+.homepage-writing{padding-block:105px}
+.writing-section-title{display:flex;justify-content:space-between;align-items:end;gap:40px;margin-bottom:37px}
+.writing-section-title h2{font-size:clamp(42px,5vw,68px);font-weight:660;letter-spacing:-.06em;line-height:1.07;margin:0 0 12px}
+.writing-section-title p{color:var(--muted);max-width:580px;margin:0;line-height:1.7}
+.writing-all{font-size:13px;font-weight:600;display:inline-flex;gap:10px;align-items:center;white-space:nowrap;text-decoration:none;padding-bottom:7px;border-bottom:1px solid var(--ink)}
+@media(max-width:700px){.blog-layout{padding:70px 0 100px}.blog-intro{padding-bottom:60px}.blog-article{padding:55px 0 110px}.blog-article>.blog-home-link{margin-bottom:55px}.blog-article>h1{font-size:46px}.blog-byline{margin:33px 0}.blog-subtitle{font-size:17px}.writing-section-title{align-items:flex-start;flex-direction:column;gap:20px}.homepage-writing{padding-block:75px}.writing-row{padding-block:27px}.writing-row h3{font-size:22px}.blog-editor{padding:38px 0 90px}.editor-auth{padding:23px}.blog-end{flex-wrap:wrap}}
+@media(prefers-reduced-motion:reduce){.writing-row,.writing-row>svg{transition:none}.writing-row:hover{padding-left:2px}.writing-row:hover>svg{transform:none}}
