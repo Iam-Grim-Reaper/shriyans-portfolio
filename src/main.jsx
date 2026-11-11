@@ -8,6 +8,7 @@ import resumePdf from '../Shriyans Denis Resume.pdf?url';
 import './styles.css';
 import BlogPage, { BlogTeaser } from './blog/Blog.jsx';
 import FloatingDock from './components/FloatingDock.jsx';
+import MemoryPolaroid from './components/MemoryPolaroid.jsx';
 
 // lucide-react dropped brand/logo marks (trademark policy), so GitHub & LinkedIn
 // are hand-drawn to match lucide's stroke-based icon style.
@@ -189,23 +190,7 @@ function Hero() {
           <span>SCROLL TO EXPLORE</span>
         </div>
       </motion.div>
-      <motion.figure
-        className="hero-polaroid"
-        initial={{ opacity: 0, y: 20, rotate: 1.5 }}
-        animate={{ opacity: 1, y: 0, rotate: -2 }}
-        transition={{ duration: .8, ease: [.2, .7, .2, 1], delay: .1 }}
-      >
-        <div className="polaroid-photo">
-          <img
-            src={shreyPortrait}
-            alt="Shriyans Denis Swamy at KBR Park in Hyderabad"
-            fetchPriority="high"
-            loading="eager"
-            decoding="async"
-          />
-        </div>
-        <figcaption>This photo was taken in KBR Park.</figcaption>
-      </motion.figure>
+      <MemoryPolaroid />
     </section>
   );
 }
