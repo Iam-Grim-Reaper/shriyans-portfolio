@@ -6,6 +6,7 @@ import { projects, skills, experiences, credentials } from './data/portfolio.js'
 import shreyPortrait from '../shrey.jpeg';
 import resumePdf from '../Shriyans Denis Resume.pdf?url';
 import './styles.css';
+import BlogPage, { BlogTeaser } from './blog/Blog.jsx';
 
 // lucide-react dropped brand/logo marks (trademark policy), so GitHub & LinkedIn
 // are hand-drawn to match lucide's stroke-based icon style.
@@ -23,6 +24,7 @@ const Linkedin = (props) => (
   </svg>
 );
 
+const Instagram = (props) => (<svg viewBox="0 0 24 24" width={props.size ?? 24} height={props.size ?? 24} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>);
 const SectionTitle = ({kicker, title, copy}) => (
   <motion.div className="section-heading" initial={{opacity:0,y:18}} whileInView={{opacity:1,y:0}} viewport={{once:true, margin:'-80px'}} transition={{duration:.6}}>
     <div className="kicker">{kicker}</div>
@@ -113,7 +115,7 @@ function Hero() {
     <section className="hero wrap">
       <motion.div initial={{opacity:0,y:14}} animate={{opacity:1,y:0}} transition={{duration:.55}} className="hero-left">
         <div className="status">AI SOFTWARE ENGINEER / GENERATIVE AI / BACKEND</div>
-        <h1>Shriyans Denis.<br/><em>Engineering useful AI.</em></h1>
+        <h1>Shriyans Denis<br/><em>Swamy.</em></h1>
         <p className="hero-copy">I build intelligent applications across agentic RAG, computer vision, and backend engineering—connecting retrieval systems and AI models to useful product experiences.</p>
         <div className="hero-actions">
           <Magnetic className="primary" href="#projects">View selected work <ArrowUpRight size={17}/></Magnetic>
@@ -134,7 +136,7 @@ function Hero() {
             decoding="async"
           />
           <div className="portrait-overlay" aria-hidden="true">
-            <span>SHRIYANS DENIS</span>
+            <span>SHRIYANS DENIS SWAMY</span>
             <span>AI ENGINEER / HYDERABAD</span>
           </div>
         </div>
@@ -160,6 +162,12 @@ function ProjectVisual({ project }) {
     '03': ['Chest X-ray', 'EfficientNet', 'Result'],
   };
   const steps = flows[project.num] ?? [];
+  if (project.videoUrl) {
+    const youtubeMatch = project.videoUrl.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/))([A-Za-z0-9_-]{11})/);
+    return <div className={'project-visual project-video visual-' + project.num}>
+      {youtubeMatch ? <iframe title={project.title + ' demo'} src={'https://www.youtube-nocookie.com/embed/' + youtubeMatch[1]} loading="lazy" referrerPolicy="strict-origin-when-cross-origin" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen/> : <video src={project.videoUrl} poster={project.posterUrl} muted autoPlay loop playsInline controls preload="metadata" aria-label={project.title + ' demo'} />}
+    </div>;
+  }
   return (
     <div className={`project-visual visual-${project.num}`}>
       <div className="visual-topline"><span>WORK / {project.num}</span><span>PROCESS OVERVIEW</span></div>
@@ -178,21 +186,23 @@ function ProjectVisual({ project }) {
 
 function App(){
   const [openProject, setOpenProject] = useState(null);
+  const isBlogRoute = window.location.pathname === '/write' || window.location.pathname.startsWith('/blog');
 
   return <div className="app-shell">
     <a className="skip-link" href="#top">Skip to main content</a>
     <div className="noise" aria-hidden="true" />
     <ScrollProgress />
     <header className="nav wrap">
-      <a className="brand" href="#top"><span>SD</span><b>SHRIYANS DENIS</b></a>
+      <a className="brand" href="/"><span>SD</span><b>SHRIYANS DENIS SWAMY</b></a>
       <nav aria-label="Main navigation">
-        <a href="#projects">Projects</a><a href="#work">Experience</a><a href="#skills">Stack</a><a href="#contact">Contact</a><a href={resumePdf} target="_blank" rel="noopener noreferrer">Résumé</a>
+        <a href="/" aria-current={!isBlogRoute ? "page" : undefined}>Home</a><a href="/#projects">Projects</a><a href="/#work">Experience</a><a href="/#skills">Skills</a><a href="/blog" aria-current={isBlogRoute ? "page" : undefined}>Blog</a><a href="/#contact">Contact</a>
       </nav>
-      <Magnetic className="nav-cta" href="mailto:shriyansdoespython@gmail.com">Let's talk <ArrowUpRight size={15}/></Magnetic>
+      <Magnetic className="nav-cta" href={resumePdf} target="_blank" rel="noopener noreferrer">Résumé <ArrowUpRight size={15}/></Magnetic>
     </header>
 
     <main id="top" tabIndex="-1">
-      <Hero />
+      {isBlogRoute ? <BlogPage /> : <>
+       <Hero />
 
       <section className="signal-bar">
         <div className="wrap signal-inner"><span>AGENTIC RAG</span><i/><span>LANGGRAPH</span><i/><span>FASTAPI</span><i/><span>QDRANT</span><i/><span>NEO4J</span><i/><span>COMPUTER VISION</span></div>
@@ -282,19 +292,22 @@ function App(){
         </div>
       </section>
 
-      <section id="contact" className="contact-section">
+      <BlogTeaser />
+       <section id="contact" className="contact-section">
         <div className="wrap contact-grid">
           <div><div className="kicker">06 / CONTACT</div><h2>Let’s build something<br/>useful with AI.</h2><p>Open to opportunities spanning Generative AI, agentic systems, computer vision, and backend engineering. Explore my work or download the latest résumé.</p></div>
           <div className="contact-links">
             <Magnetic strength={10} href="mailto:shriyansdoespython@gmail.com"><Mail/>shriyansdoespython@gmail.com<ArrowUpRight/></Magnetic>
             <Magnetic strength={10} href="https://linkedin.com/in/shriyansdenis" target="_blank" rel="noreferrer"><Linkedin/>LinkedIn<ArrowUpRight/></Magnetic>
             <Magnetic strength={10} href="https://github.com/Iam-Grim-Reaper" target="_blank" rel="noopener noreferrer"><Github/>GitHub<ArrowUpRight/></Magnetic>
+             <Magnetic strength={10} href="https://www.instagram.com/chio_kun/" target="_blank" rel="noopener noreferrer"><Instagram/>Instagram · @chio_kun<ArrowUpRight/></Magnetic>
             <a href={resumePdf} download="Shriyans-Denis-Resume.pdf"><FileDown/>Download résumé (PDF)<ArrowUpRight/></a>
           </div>
         </div>
       </section>
-    </main>
-    <footer className="wrap footer"><span>© 2026 Shriyans Denis</span><span>AI ENGINEERING · SELECTED WORK</span></footer>
+       </>}
+     </main>
+    <footer className="wrap footer"><span>© 2026 Shriyans Denis Swamy</span><span>AI ENGINEERING · SELECTED WORK</span></footer>
 
     <AnimatePresence>
       {openProject && <ProjectModal project={openProject} onClose={() => setOpenProject(null)} />}
