@@ -674,3 +674,58 @@ body{background:#fff;color:#111}
 @media (prefers-reduced-motion: reduce) {
   .typewriter-caret { animation: none; }
 }
+
+
+/* Hero simplification — primary navigation lives in the floating dock. */
+.hero-refined {
+  padding-top: clamp(58px, 6vw, 91px);
+  padding-bottom: clamp(66px, 6vw, 95px);
+}
+.hero-refined .meta-row {
+  margin-top: 24px;
+}
+.hero-scroll-cue {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  margin-top: 34px;
+  color: #909090;
+  font: 500 10px/1.5 var(--mono);
+  letter-spacing: .16em;
+  user-select: none;
+}
+.hero-scroll-cue-line {
+  display: block;
+  width: 1px;
+  height: 29px;
+  background: #dfdfdf;
+  position: relative;
+  overflow: hidden;
+}
+.hero-scroll-cue-line span {
+  display: block;
+  width: 1px;
+  height: 10px;
+  position: absolute;
+  left: 0;
+  top: -11px;
+  background: #222;
+  animation: portfolio-scroll-cue 2.2s ease-in-out infinite;
+}
+@keyframes portfolio-scroll-cue {
+  0% { transform: translateY(0); opacity: 0; }
+  25% { opacity: 1; }
+  75% { opacity: 1; }
+  100% { transform: translateY(41px); opacity: 0; }
+}
+@media(max-width:800px) {
+  .hero-refined { padding-top: 51px; padding-bottom: 68px; }
+}
+@media(max-width:520px) {
+  .hero-refined { padding-top: 44px; padding-bottom: 57px; }
+  .hero-refined .meta-row { margin-top: 21px; }
+  .hero-scroll-cue { margin-top: 26px; font-size: 9px; }
+}
+@media(prefers-reduced-motion:reduce) {
+  .hero-scroll-cue-line span { animation: none; top: 9px; opacity: 1; }
+}
