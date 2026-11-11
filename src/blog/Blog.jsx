@@ -158,21 +158,21 @@ export function BlogTeaser() {
 function BlogIndex() {
   const { posts, status } = usePosts();
   useEffect(() => { document.title = 'Writing | Shriyans Denis Swamy'; }, []);
-  return <main className="wrap blog-layout" id="top">
+  return <div className="wrap blog-layout" id="writing-content">
     <div className="blog-intro"><div className="kicker">SHRIYANS / WRITING</div><h1>Writing<span className="blog-period">.</span></h1><p>Ideas, experiments, technical breakdowns, and lessons from building AI products. Written by me, shared here.</p></div>
     <div className="blog-list-heading"><span>ALL ARTICLES</span><span>{posts.length ? String(posts.length).padStart(2,'0') : '—'}</span></div>
     {posts.length ? <div className="writing-list">{posts.map(p=><ArticleLink post={p} key={p.slug}/>)}</div>
       : <div className="blog-empty"><BookOpen size={23}/><h2>No articles published yet.</h2><p>{status === 'error' ? 'Could not load the blog at the moment. Please check back.' : status === 'loading' ? 'Loading articles…' : 'I am working on the first post. Come back for notes on AI engineering and projects.'}</p></div>}
     <a className="blog-home-link" href="/"><ArrowLeft size={17}/> Back to portfolio</a>
-  </main>;
+  </div>;
 }
 
 function BlogArticle({ slug }) {
   const { posts, status } = usePosts();
   const article = posts.find(p => p.slug === slug);
   useEffect(() => { document.title = (article ? article.title + ' | ' : 'Writing | ') + 'Shriyans Denis Swamy'; }, [article]);
-  if (!article) return <main className="wrap blog-article blog-loading" id="top"><a className="blog-home-link" href="/blog"><ArrowLeft size={17}/> All writing</a><p>{status === 'loading' ? 'Loading article…' : 'This article is not available.'}</p></main>;
-  return <main className="wrap blog-article" id="top">
+  if (!article) return <div className="wrap blog-article blog-loading" id="writing-content"><a className="blog-home-link" href="/blog"><ArrowLeft size={17}/> All writing</a><p>{status === 'loading' ? 'Loading article…' : 'This article is not available.'}</p></div>;
+  return <div className="wrap blog-article" id="writing-content">
     <a href="/blog" className="blog-home-link"><ArrowLeft size={16}/> All writing</a>
     <div className="writing-meta">{article.category || 'Engineering notes'} <span>·</span> {formatDate(article.date)} <span>·</span> {article.readTime || readableTime(article.body || '')} min read</div>
     <h1>{article.title}</h1>
@@ -180,7 +180,7 @@ function BlogArticle({ slug }) {
     <div className="blog-byline"><span className="byline-avatar">SD</span><div><strong>Shriyans Denis Swamy</strong><small>AI Engineer · Technical writing</small></div></div>
     <MarkdownArticle content={article.body}/>
     <div className="blog-end"><p>Thanks for reading.</p><a href="/blog">More writing <ArrowRight size={17}/></a></div>
-  </main>;
+  </div>;
 }
 
 const emptyDraft = { title: '', description: '', category: 'Engineering', body: '', slug: '' };
@@ -266,7 +266,7 @@ function BlogEditor() {
     } finally { setBusy(false); }
   }
 
-  return <main className="wrap blog-editor" id="top">
+  return <div className="wrap blog-editor" id="writing-content">
     <a href="/blog" className="blog-home-link"><ArrowLeft size={17}/> Back to writing</a>
     <div className="kicker">PRIVATE / PUBLISHING WORKSPACE</div>
     <h1>Write & publish<span className="blog-period">.</span></h1>
@@ -296,7 +296,7 @@ function BlogEditor() {
       </form>}
       <div className="editor-existing"><h2>Published articles</h2>{posts.length ? posts.map(p=><button key={p.slug} type="button" onClick={()=>startEditing(p)}><span>{p.title}</span><small>Edit <ArrowUpRight size={13}/></small></button>) : <p>No articles yet. Your first post will appear here.</p>}</div>
     </div>}
-  </main>;
+  </div>;
 }
 
 export default function BlogPage() {
