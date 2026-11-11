@@ -77,3 +77,37 @@ This direction intentionally favors legibility and recruiter usability over curs
 - Use the résumé as the source for dates and experience scope. Validate specific technical performance claims against published code or reproducible results before adding them to the website.
 
 Changing the résumé's bytes on GitHub will change its built asset URL on the next Vercel deployment. No separate cloud file hosting is required.
+
+
+## November 2026 — white/black portfolio, writing and video demos
+
+- Navigation now uses a compact, responsive white pill header with black active states.
+- Typography uses Geist and Geist Mono, with a pure-white background and near-black text.
+- Portfolio branding uses **Shriyans Denis Swamy** and links to Instagram [@chio_kun](https://www.instagram.com/chio_kun/).
+- The homepage shows the three most recent articles in a technical-writing section.
+- Public article list: \`/blog\`. Public article URL: \`/blog/<slug>\`.
+- Private editor: \`/write\`. **Do not put your publishing credential in code or send it to anyone.**
+- Article content is committed to \`public/blog-posts.json\` by the editor. Vercel's Git integration rebuilds after each commit, which means an article is live after its deployment completes, not instantly after clicking Publish.
+
+### Publishing your first article
+
+1. Sign into GitHub as \`Iam-Grim-Reaper\`.
+2. Create a **fine-grained personal access token** under GitHub Settings → Developer settings → Personal access tokens. Restrict it to exactly one repo: \`shriyans-portfolio\`. Grant **Contents: Read and write**. Set an expiration date.
+3. Open \`https://shriyans-ten.vercel.app/write\`. Paste the token into the password field. The token is held only in page memory, not stored in localStorage, cookies, or the repository.
+4. Write the title, summary, category and Markdown article. Preview it; then publish.
+5. Vercel automatically deploys the commit. Your article becomes visible at \`/blog/<slug>\` after the deployment succeeds.
+
+The editor checks that GitHub's authenticated user is \`Iam-Grim-Reaper\` and GitHub independently enforces write permissions on the repository. Someone knowing the \`/write\` URL cannot publish without that credential. The token is transmitted directly to GitHub's API over HTTPS. Use a short-lived, repository-scoped token and revoke it if lost.
+
+Markdown supported: headings (\`#\`, \`##\`, \`###\`), bullet lists, bold, inline code, fenced code with triple tilde (\`~~~\`), blockquotes, rules, and links. The renderer does **not** inject untrusted HTML. Keep images and video in projects, not inline in blog articles, for now.
+
+### Adding project videos
+
+The project visual component reads two optional fields in each object in \`src/data/portfolio.js\`:
+
+\`\`\`js
+videoUrl: 'https://.../demo.mp4', // or a full YouTube video URL
+posterUrl: 'https://.../poster.webp', // optional poster for direct video
+\`\`\`
+
+For direct MP4/WebM videos the card plays the preview muted in a loop, with controls. YouTube links render as a privacy-enhanced embed. Without videoUrl, each project keeps its current pipeline visualization. Make video previews 16:9, ideally 1080p with legible on-screen text, 15–45 seconds long, compressed for quick loading. Only use media you own and have permission to publish. Remove personal data, internal credentials, and sensitive internship material. 
