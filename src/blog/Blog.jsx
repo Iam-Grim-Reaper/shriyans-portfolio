@@ -153,7 +153,7 @@ export function BlogTeaser() {
   const { posts, status } = usePosts();
   return <section className="section wrap homepage-writing" id="writing">
     <div className="writing-section-title">
-      <div><div className="kicker">04 / TECHNICAL WRITING</div><h2>Notes from the build.</h2><p>What I'm learning about AI systems, engineering decisions, and shipping software.</p></div>
+      <div><div className="kicker">04 / FIELD NOTES</div><h2>What I’ve been learning lately.</h2><p>New ideas in AI, explained simply—with sketches, questions, and the engineering details that matter.</p></div>
       <a href="/blog" className="writing-all">All writing <ArrowUpRight size={17}/></a>
     </div>
     {posts.length ? <div className="writing-list">{posts.slice(0,3).map(p=><ArticleLink post={p} key={p.slug}/>)}</div>
